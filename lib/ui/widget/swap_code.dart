@@ -1,0 +1,178 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+import '../../util/extension/extension.dart';
+import '../../util/hook.dart';
+import '../../util/logger.dart';
+import '../../util/r.dart';
+import '../widget/symbol.dart';
+
+class SwapCode extends HookWidget {
+  const SwapCode(
+      {Key? key,
+      required this.codeUrl,
+      required this.inputString,
+      required this.followId,
+      required this.logo,
+      required this.chainLogo})
+      : super(key: key);
+
+  final String codeUrl;
+  final String inputString;
+  final String followId;
+  final String logo;
+  final String chainLogo;
+
+  @override
+  Widget build(BuildContext context) {
+    useMemoizedFuture(() => context.appServices.updatePairs());
+    final loading = useState(false);
+
+    Future<void> showSuccess() async {
+      await showDialog<void>(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.of(context).pop(true);
+          });
+          return const AlertDialog(
+            title: Text(
+              'Success',
+              textAlign: TextAlign.center,
+            ),
+            titlePadding: EdgeInsets.all(20),
+            titleTextStyle: TextStyle(color: Colors.black87, fontSize: 16),
+            content: Text('Swap Success!'),
+            contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 20.0),
+            contentTextStyle: TextStyle(color: Colors.black54, fontSize: 14),
+          );
+        },
+      );
+    }
+
+    Future<void> handleSwap() async {
+      if (loading.value) {
+        return;
+      }
+      loading.value = true;
+      const timeout = Duration(seconds: 1);
+      Timer.periodic(timeout, (timer) async {
+        //1s 回调一次
+        try {
+          await context.appServices.fswap.readOrderDetail(followId);
+          timer.cancel(); // 取消定时器
+          Navigator.pop(context);
+          await showSuccess();
+        } catch (error, s) {
+          e('$error, $s');
+        }
+      });
+    }
+
+    return SizedBox(
+        height: MediaQuery.of(context).size.height - 100,
+        child: Center(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Opacity(
+                          opacity: 0.9,
+                          child: Image.asset(
+                            R.resourcesAuthBgWebp,
+                            fit: BoxFit.cover,
+                            height: 360,
+                            width: 360,
+                          ),
+                        ),
+                      ),
+                      if (codeUrl.isNotEmpty)
+                        Center(
+                          child: QrImage(
+                            data: codeUrl,
+                            version: QrVersions.auto,
+                            size: 250.0,
+                            embeddedImage:
+                                const AssetImage(R.resourcesLogoWebp),
+                          ),
+                        )
+                      else
+                        Container(),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF000000),
+                        ),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SymbolIconWithBorder(
+                                symbolUrl: logo,
+                                chainUrl: chainLogo,
+                                size: 50,
+                                chainSize: 15,
+                                chainBorder: BorderSide(
+                                  color: context.colorScheme.background,
+                                  width: 1.5,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Text('扫码支付',
+                                  style: TextStyle(
+                                    color: Color(0xFFffffff),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                              Text(
+                                inputString,
+                                style: const TextStyle(
+                                  color: Color(0xFFffffff),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text('扫描二维码,并确认支付.',
+                                  style: TextStyle(
+                                    color: Color(0xFFffffff),
+                                  )),
+                              const SizedBox(height: 20),
+                              TextButton(
+                                onPressed: handleSwap,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(20),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: const BorderSide(
+                                        color: Color(0xFFffffff),
+                                      )),
+                                ),
+                                child: Text(loading.value ? '查询中' : '已支付',
+                                    style: const TextStyle(
+                                      color: Color(0xFFffffff),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ),
+                            ])))
+              ],
+            ),
+          ),
+        ));
+  }
+}

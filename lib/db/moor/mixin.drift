@@ -1,0 +1,35 @@
+CREATE TABLE pairs(
+  base_amount         TEXT NOT NULL,
+  base_asset_id       TEXT NOT NULL,
+  base_value          TEXT NOT NULL,
+  base_volume_24h     TEXT NOT NULL,
+  fee_24h             TEXT NOT NULL,
+  fee_percent         TEXT NOT NULL,
+  liquidity           TEXT NOT NULL,
+  liquidity_asset_id  TEXT NOT NULL,
+  max_liquidity       TEXT NOT NULL,
+  quote_amount        TEXT NOT NULL,
+  quote_asset_id      TEXT NOT NULL,
+  quote_value         TEXT NOT NULL,
+  quote_volume_24h    TEXT NOT NULL,
+  route_id            INTEGER,
+  swap_method         TEXT,
+  transaction_count_24h INTEGER,
+  version               INTEGER,
+  volume_24h          TEXT NOT NULL,
+  PRIMARY KEY(base_asset_id, quote_asset_id)
+);
+
+CREATE TABLE assets(
+  id           TEXT NOT NULL,
+  logo         TEXT NOT NULL,
+  name         TEXT NOT NULL,
+  price        TEXT NOT NULL,
+  symbol       TEXT,
+  extra        TEXT,
+  chain_id     TEXT NOT NULL,
+  chain_symbol TEXT,
+  chain_logo   TEXT NOT NULL,
+  chain_name   TEXT NOT NULL,
+  PRIMARY KEY(id)
+);
