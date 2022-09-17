@@ -41,3 +41,14 @@ flutter build ios --release
 flutter build android --release
 ```
 For detailed explanation on how things work, checkout [flutter docs](https://docs.flutter.dev/).
+
+
+## reference
+
+- <https://pando.im/>  
+- [pando-4swap-doc](https://docs.pando.im/developer/intro)  
+- [4swap-Web-vue)](https://github.com/fox-one/4swap-web)  
+- [SDK golang](https://github.com/fox-one/4swap-sdk-go) 
+- [4Swap Webside](https://app.4swap.org/#/pool)  
+- [flutter dart package](https://pub.dev/publishers/mixin.dev/packages)  
+- [mixin flutter](https://github.com/MixinNetwork/flutter-ap
