@@ -1,4 +1,4 @@
-# 4swap-native
+# 4swap-native-app
 
 > 4swap native application of flutter
 
@@ -22,7 +22,7 @@ $ flutter upgrade
 flutter run -d ios
 flutter run -d android
 ```
-## build Requirement
+## Build Requirement
 
 there are some addition library needed.
 ``` bash
@@ -41,7 +41,7 @@ flutter build android --release
 For detailed explanation on how things work, checkout [flutter docs](https://docs.flutter.dev/).
 
 
-## reference
+## Reference
 
 - <https://pando.im/>  
 - [pando-4swap-doc](https://docs.pando.im/developer/intro)  
