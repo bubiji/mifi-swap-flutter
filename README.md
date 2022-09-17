@@ -2,8 +2,6 @@
 
 > 4swap native application of flutter
 
-[![Dart CI](https://github.com/bubiji/4swap-flutter/workflows/Dart%20CI/badge.svg)](https://github.com/bubiji/4swap-flutter/actions)
-
 4swap for Android, IOS, powered by [Flutter](https://flutter.dev/), the Dart SDK from another repo [4swap dart](https://github.com/bubiji/4swap_dart_sdk).
 
 
@@ -51,4 +49,4 @@ For detailed explanation on how things work, checkout [flutter docs](https://doc
 - [SDK golang](https://github.com/fox-one/4swap-sdk-go) 
 - [4Swap Webside](https://app.4swap.org/#/pool)  
 - [flutter dart package](https://pub.dev/publishers/mixin.dev/packages)  
-- [mixin flutter](https://github.com/MixinNetwork/flutter-ap
+- [mixin flutter](https://github.com/MixinNetwork/flutter-app)
