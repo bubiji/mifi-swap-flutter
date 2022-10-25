@@ -1,8 +1,8 @@
-# 4swap-native-app
+# MifiSwap-native-app
 
-> 4swap native application of flutter
+> MifiSwap native application of flutter : [HomePage](https://flutter.dev/)
 
-4swap for Android, IOS, powered by [Flutter](https://flutter.dev/), the Dart SDK from another repo [4swap dart](https://github.com/bubiji/4swap_dart_sdk).
+MifiSwap for Android, IOS, powered by [Flutter](https://flutter.dev/), the Dart SDK from another repo [mifi_swap dart](https://github.com/bubiji/mifi_swap_dart_sdk).
 
 
 ## Quick start
