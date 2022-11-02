@@ -111,7 +111,7 @@ class AppTabsScaffold extends StatelessWidget {
                       width: 24,
                       color: context.colorScheme.primaryText,
                     ),
-                    label: 'Swap',
+                    label: context.l10n.swap,
                   ),
                 ]),
           ],

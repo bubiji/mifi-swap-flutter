@@ -51,6 +51,9 @@ class R {
   static const String resourcesEmptyTransactionGreySvg =
       'resources/empty_transaction_grey.svg';
 
+  /// {@macro assets_generator.resourcesFennecLogoPng.preview}
+  static const String resourcesFennecLogoPng = 'resources/fennec-logo.png';
+
   /// {@macro assets_generator.resourcesHiddenSvg.preview}
   static const String resourcesHiddenSvg = 'resources/hidden.svg';
 
@@ -79,6 +82,9 @@ class R {
 
   /// {@macro assets_generator.resourcesMeSvg.preview}
   static const String resourcesMeSvg = 'resources/me.svg';
+
+  /// {@macro assets_generator.resourcesMixinLogoPng.preview}
+  static const String resourcesMixinLogoPng = 'resources/mixin-logo.png';
 
   /// {@macro assets_generator.resourcesRightSvg.preview}
   static const String resourcesRightSvg = 'resources/right.svg';

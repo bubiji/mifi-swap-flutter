@@ -38,16 +38,18 @@ class SwapCode extends HookWidget {
           Future.delayed(const Duration(seconds: 2), () {
             Navigator.of(context).pop(true);
           });
-          return const AlertDialog(
+          return AlertDialog(
             title: Text(
-              'Success',
+              context.l10n.success,
               textAlign: TextAlign.center,
             ),
-            titlePadding: EdgeInsets.all(20),
-            titleTextStyle: TextStyle(color: Colors.black87, fontSize: 16),
-            content: Text('Swap Success!'),
-            contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 20.0),
-            contentTextStyle: TextStyle(color: Colors.black54, fontSize: 14),
+            titlePadding: const EdgeInsets.all(20),
+            titleTextStyle:
+                const TextStyle(color: Colors.black87, fontSize: 16),
+            content: Text(context.l10n.swapSuccessfully),
+            contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20.0),
+            contentTextStyle:
+                const TextStyle(color: Colors.black54, fontSize: 14),
           );
         },
       );
@@ -132,8 +134,8 @@ class SwapCode extends HookWidget {
                                 ),
                               ),
                               const SizedBox(width: 6),
-                              const Text('扫码支付',
-                                  style: TextStyle(
+                              Text(context.l10n.scanTopay,
+                                  style: const TextStyle(
                                     color: Color(0xFFffffff),
                                     fontSize: 24,
                                     fontWeight: FontWeight.w700,
@@ -147,8 +149,8 @@ class SwapCode extends HookWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              const Text('扫描二维码,并确认支付.',
-                                  style: TextStyle(
+                              Text(context.l10n.scanandpay,
+                                  style: const TextStyle(
                                     color: Color(0xFFffffff),
                                   )),
                               const SizedBox(height: 20),
@@ -162,7 +164,10 @@ class SwapCode extends HookWidget {
                                         color: Color(0xFFffffff),
                                       )),
                                 ),
-                                child: Text(loading.value ? '查询中' : '已支付',
+                                child: Text(
+                                    loading.value
+                                        ? context.l10n.transactionChecking
+                                        : context.l10n.paid,
                                     style: const TextStyle(
                                       color: Color(0xFFffffff),
                                       fontSize: 20,

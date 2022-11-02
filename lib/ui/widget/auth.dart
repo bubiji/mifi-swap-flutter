@@ -27,8 +27,8 @@ class Auth extends HookWidget {
           if (!launched && url != null) {
             scheduleMicrotask(() async {
               launched = true;
-              final _url = Uri.parse(url);
-              if (!await launchUrl(_url)) {
+              final parsedUrl = Uri.parse(url);
+              if (!await launchUrl(parsedUrl)) {
                 launched = false;
               }
             });
@@ -111,7 +111,7 @@ class _AuthBody extends StatelessWidget {
                       data: url,
                       version: QrVersions.auto,
                       size: 250.0,
-                      embeddedImage: const AssetImage(R.resourcesLogoWebp),
+                      embeddedImage: const AssetImage(R.resourcesMixinLogoPng),
                     ),
                   )
                 else

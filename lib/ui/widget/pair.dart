@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
 import '../../util/pair.dart';
 import '../page/home/asset_header.dart';
@@ -22,13 +23,21 @@ class PairWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onTap() {
-      context.push(assetDetailPath.toUri({'id': data.pair.baseAssetId}));
+      // context.push(assetDetailPath.toUri({'id': data.pair.baseAssetId}));
+      setDbInputAssetId(data.pair.baseAssetId);
+      setDbOutputAssetId(data.pair.quoteAssetId);
+      context.replace(Uri(path: swapPath).replace(
+        queryParameters: {
+          'input': data.pair.baseAssetId,
+          'output': data.pair.quoteAssetId,
+        },
+      ));
     }
 
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 72,
+        height: 80,
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [

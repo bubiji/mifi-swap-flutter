@@ -28,7 +28,7 @@ class AssetWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 72,
+        height: 80,
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [

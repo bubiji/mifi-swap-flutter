@@ -28,9 +28,7 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // assert(context.appServices.databaseInitialized);
-
-    useMemoizedFuture(() => context.appServices.updatePairs());
+    useMemoizedFuture(() => context.appServices.updatePairsAndAssets());
 
     final sortParam =
         useQueryParameter(kQueryParameterSort, path: homeUri.path);
@@ -170,14 +168,14 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
       keys: [selectedTab],
     );
     useEffect(() {
-      void _onTabChanged() {
+      void onTabChanged() {
         final params = <String, String>{};
         params[kQueryParameterTab] = _Tab.values[controller.index].name;
         context.replace(homeUri.replace(queryParameters: params));
       }
 
-      controller.addListener(_onTabChanged);
-      return () => controller.removeListener(_onTabChanged);
+      controller.addListener(onTabChanged);
+      return () => controller.removeListener(onTabChanged);
     });
     return SizedBox(
       height: 60,
@@ -192,9 +190,9 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
         ),
         labelColor: context.colorScheme.primaryText,
         unselectedLabelColor: const Color(0xFFBCBEC3),
-        tabs: const [
-          Tab(text: 'Assets'),
-          Tab(text: 'Pool'),
+        tabs: [
+          Tab(text: context.l10n.assets),
+          Tab(text: context.l10n.pools),
         ],
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3,

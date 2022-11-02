@@ -3,7 +3,7 @@
 part of 'mixin_database.dart';
 
 // **************************************************************************
-// MoorGenerator
+// DriftDatabaseGenerator
 // **************************************************************************
 
 // ignore_for_file: type=lint
@@ -26,7 +26,7 @@ class Pair extends DataClass implements Insertable<Pair> {
   final int? transactionCount24h;
   final int? version;
   final String volume24h;
-  Pair(
+  const Pair(
       {required this.baseAmount,
       required this.baseAssetId,
       required this.baseValue,
@@ -45,47 +45,6 @@ class Pair extends DataClass implements Insertable<Pair> {
       this.transactionCount24h,
       this.version,
       required this.volume24h});
-  factory Pair.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Pair(
-      baseAmount: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}base_amount'])!,
-      baseAssetId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}base_asset_id'])!,
-      baseValue: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}base_value'])!,
-      baseVolume24h: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}base_volume_24h'])!,
-      fee24h: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fee_24h'])!,
-      feePercent: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fee_percent'])!,
-      liquidity: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}liquidity'])!,
-      liquidityAssetId: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}liquidity_asset_id'])!,
-      maxLiquidity: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}max_liquidity'])!,
-      quoteAmount: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}quote_amount'])!,
-      quoteAssetId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}quote_asset_id'])!,
-      quoteValue: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}quote_value'])!,
-      quoteVolume24h: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}quote_volume_24h'])!,
-      routeId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}route_id']),
-      swapMethod: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}swap_method']),
-      transactionCount24h: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}transaction_count_24h']),
-      version: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}version']),
-      volume24h: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}volume_24h'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -103,16 +62,16 @@ class Pair extends DataClass implements Insertable<Pair> {
     map['quote_value'] = Variable<String>(quoteValue);
     map['quote_volume_24h'] = Variable<String>(quoteVolume24h);
     if (!nullToAbsent || routeId != null) {
-      map['route_id'] = Variable<int?>(routeId);
+      map['route_id'] = Variable<int>(routeId);
     }
     if (!nullToAbsent || swapMethod != null) {
-      map['swap_method'] = Variable<String?>(swapMethod);
+      map['swap_method'] = Variable<String>(swapMethod);
     }
     if (!nullToAbsent || transactionCount24h != null) {
-      map['transaction_count_24h'] = Variable<int?>(transactionCount24h);
+      map['transaction_count_24h'] = Variable<int>(transactionCount24h);
     }
     if (!nullToAbsent || version != null) {
-      map['version'] = Variable<int?>(version);
+      map['version'] = Variable<int>(version);
     }
     map['volume_24h'] = Variable<String>(volume24h);
     return map;
@@ -395,10 +354,10 @@ class PairsCompanion extends UpdateCompanion<Pair> {
     Expression<String>? quoteAssetId,
     Expression<String>? quoteValue,
     Expression<String>? quoteVolume24h,
-    Expression<int?>? routeId,
-    Expression<String?>? swapMethod,
-    Expression<int?>? transactionCount24h,
-    Expression<int?>? version,
+    Expression<int>? routeId,
+    Expression<String>? swapMethod,
+    Expression<int>? transactionCount24h,
+    Expression<int>? version,
     Expression<String>? volume24h,
   }) {
     return RawValuesInsertable({
@@ -508,16 +467,16 @@ class PairsCompanion extends UpdateCompanion<Pair> {
       map['quote_volume_24h'] = Variable<String>(quoteVolume24h.value);
     }
     if (routeId.present) {
-      map['route_id'] = Variable<int?>(routeId.value);
+      map['route_id'] = Variable<int>(routeId.value);
     }
     if (swapMethod.present) {
-      map['swap_method'] = Variable<String?>(swapMethod.value);
+      map['swap_method'] = Variable<String>(swapMethod.value);
     }
     if (transactionCount24h.present) {
-      map['transaction_count_24h'] = Variable<int?>(transactionCount24h.value);
+      map['transaction_count_24h'] = Variable<int>(transactionCount24h.value);
     }
     if (version.present) {
-      map['version'] = Variable<int?>(version.value);
+      map['version'] = Variable<int>(version.value);
     }
     if (volume24h.present) {
       map['volume_24h'] = Variable<String>(volume24h.value);
@@ -557,119 +516,119 @@ class Pairs extends Table with TableInfo<Pairs, Pair> {
   final String? _alias;
   Pairs(this.attachedDatabase, [this._alias]);
   final VerificationMeta _baseAmountMeta = const VerificationMeta('baseAmount');
-  late final GeneratedColumn<String?> baseAmount = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> baseAmount = GeneratedColumn<String>(
       'base_amount', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _baseAssetIdMeta =
       const VerificationMeta('baseAssetId');
-  late final GeneratedColumn<String?> baseAssetId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> baseAssetId = GeneratedColumn<String>(
       'base_asset_id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _baseValueMeta = const VerificationMeta('baseValue');
-  late final GeneratedColumn<String?> baseValue = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> baseValue = GeneratedColumn<String>(
       'base_value', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _baseVolume24hMeta =
       const VerificationMeta('baseVolume24h');
-  late final GeneratedColumn<String?> baseVolume24h = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> baseVolume24h = GeneratedColumn<String>(
       'base_volume_24h', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _fee24hMeta = const VerificationMeta('fee24h');
-  late final GeneratedColumn<String?> fee24h = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> fee24h = GeneratedColumn<String>(
       'fee_24h', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _feePercentMeta = const VerificationMeta('feePercent');
-  late final GeneratedColumn<String?> feePercent = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> feePercent = GeneratedColumn<String>(
       'fee_percent', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _liquidityMeta = const VerificationMeta('liquidity');
-  late final GeneratedColumn<String?> liquidity = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> liquidity = GeneratedColumn<String>(
       'liquidity', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _liquidityAssetIdMeta =
       const VerificationMeta('liquidityAssetId');
-  late final GeneratedColumn<String?> liquidityAssetId =
-      GeneratedColumn<String?>('liquidity_asset_id', aliasedName, false,
-          type: const StringType(),
-          requiredDuringInsert: true,
-          $customConstraints: 'NOT NULL');
+  late final GeneratedColumn<String> liquidityAssetId = GeneratedColumn<String>(
+      'liquidity_asset_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _maxLiquidityMeta =
       const VerificationMeta('maxLiquidity');
-  late final GeneratedColumn<String?> maxLiquidity = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> maxLiquidity = GeneratedColumn<String>(
       'max_liquidity', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _quoteAmountMeta =
       const VerificationMeta('quoteAmount');
-  late final GeneratedColumn<String?> quoteAmount = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> quoteAmount = GeneratedColumn<String>(
       'quote_amount', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _quoteAssetIdMeta =
       const VerificationMeta('quoteAssetId');
-  late final GeneratedColumn<String?> quoteAssetId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> quoteAssetId = GeneratedColumn<String>(
       'quote_asset_id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _quoteValueMeta = const VerificationMeta('quoteValue');
-  late final GeneratedColumn<String?> quoteValue = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> quoteValue = GeneratedColumn<String>(
       'quote_value', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _quoteVolume24hMeta =
       const VerificationMeta('quoteVolume24h');
-  late final GeneratedColumn<String?> quoteVolume24h = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> quoteVolume24h = GeneratedColumn<String>(
       'quote_volume_24h', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _routeIdMeta = const VerificationMeta('routeId');
-  late final GeneratedColumn<int?> routeId = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> routeId = GeneratedColumn<int>(
       'route_id', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _swapMethodMeta = const VerificationMeta('swapMethod');
-  late final GeneratedColumn<String?> swapMethod = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> swapMethod = GeneratedColumn<String>(
       'swap_method', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _transactionCount24hMeta =
       const VerificationMeta('transactionCount24h');
-  late final GeneratedColumn<int?> transactionCount24h = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> transactionCount24h = GeneratedColumn<int>(
       'transaction_count_24h', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _versionMeta = const VerificationMeta('version');
-  late final GeneratedColumn<int?> version = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
       'version', aliasedName, true,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _volume24hMeta = const VerificationMeta('volume24h');
-  late final GeneratedColumn<String?> volume24h = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> volume24h = GeneratedColumn<String>(
       'volume_24h', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -833,8 +792,45 @@ class Pairs extends Table with TableInfo<Pairs, Pair> {
   Set<GeneratedColumn> get $primaryKey => {baseAssetId, quoteAssetId};
   @override
   Pair map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Pair.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Pair(
+      baseAmount: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}base_amount'])!,
+      baseAssetId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}base_asset_id'])!,
+      baseValue: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}base_value'])!,
+      baseVolume24h: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}base_volume_24h'])!,
+      fee24h: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}fee_24h'])!,
+      feePercent: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}fee_percent'])!,
+      liquidity: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}liquidity'])!,
+      liquidityAssetId: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}liquidity_asset_id'])!,
+      maxLiquidity: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}max_liquidity'])!,
+      quoteAmount: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}quote_amount'])!,
+      quoteAssetId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}quote_asset_id'])!,
+      quoteValue: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}quote_value'])!,
+      quoteVolume24h: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}quote_volume_24h'])!,
+      routeId: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}route_id']),
+      swapMethod: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}swap_method']),
+      transactionCount24h: attachedDatabase.options.types.read(
+          DriftSqlType.int, data['${effectivePrefix}transaction_count_24h']),
+      version: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}version']),
+      volume24h: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}volume_24h'])!,
+    );
   }
 
   @override
@@ -860,7 +856,7 @@ class Asset extends DataClass implements Insertable<Asset> {
   final String? chainSymbol;
   final String chainLogo;
   final String chainName;
-  Asset(
+  const Asset(
       {required this.id,
       required this.logo,
       required this.name,
@@ -871,31 +867,6 @@ class Asset extends DataClass implements Insertable<Asset> {
       this.chainSymbol,
       required this.chainLogo,
       required this.chainName});
-  factory Asset.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Asset(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      logo: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}logo'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      price: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}price'])!,
-      symbol: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}symbol']),
-      extra: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}extra']),
-      chainId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}chain_id'])!,
-      chainSymbol: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}chain_symbol']),
-      chainLogo: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}chain_logo'])!,
-      chainName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}chain_name'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -904,14 +875,14 @@ class Asset extends DataClass implements Insertable<Asset> {
     map['name'] = Variable<String>(name);
     map['price'] = Variable<String>(price);
     if (!nullToAbsent || symbol != null) {
-      map['symbol'] = Variable<String?>(symbol);
+      map['symbol'] = Variable<String>(symbol);
     }
     if (!nullToAbsent || extra != null) {
-      map['extra'] = Variable<String?>(extra);
+      map['extra'] = Variable<String>(extra);
     }
     map['chain_id'] = Variable<String>(chainId);
     if (!nullToAbsent || chainSymbol != null) {
-      map['chain_symbol'] = Variable<String?>(chainSymbol);
+      map['chain_symbol'] = Variable<String>(chainSymbol);
     }
     map['chain_logo'] = Variable<String>(chainLogo);
     map['chain_name'] = Variable<String>(chainName);
@@ -1075,10 +1046,10 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
     Expression<String>? logo,
     Expression<String>? name,
     Expression<String>? price,
-    Expression<String?>? symbol,
-    Expression<String?>? extra,
+    Expression<String>? symbol,
+    Expression<String>? extra,
     Expression<String>? chainId,
-    Expression<String?>? chainSymbol,
+    Expression<String>? chainSymbol,
     Expression<String>? chainLogo,
     Expression<String>? chainName,
   }) {
@@ -1137,16 +1108,16 @@ class AssetsCompanion extends UpdateCompanion<Asset> {
       map['price'] = Variable<String>(price.value);
     }
     if (symbol.present) {
-      map['symbol'] = Variable<String?>(symbol.value);
+      map['symbol'] = Variable<String>(symbol.value);
     }
     if (extra.present) {
-      map['extra'] = Variable<String?>(extra.value);
+      map['extra'] = Variable<String>(extra.value);
     }
     if (chainId.present) {
       map['chain_id'] = Variable<String>(chainId.value);
     }
     if (chainSymbol.present) {
-      map['chain_symbol'] = Variable<String?>(chainSymbol.value);
+      map['chain_symbol'] = Variable<String>(chainSymbol.value);
     }
     if (chainLogo.present) {
       map['chain_logo'] = Variable<String>(chainLogo.value);
@@ -1181,64 +1152,64 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   final String? _alias;
   Assets(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _logoMeta = const VerificationMeta('logo');
-  late final GeneratedColumn<String?> logo = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> logo = GeneratedColumn<String>(
       'logo', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _priceMeta = const VerificationMeta('price');
-  late final GeneratedColumn<String?> price = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> price = GeneratedColumn<String>(
       'price', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _symbolMeta = const VerificationMeta('symbol');
-  late final GeneratedColumn<String?> symbol = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> symbol = GeneratedColumn<String>(
       'symbol', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _extraMeta = const VerificationMeta('extra');
-  late final GeneratedColumn<String?> extra = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> extra = GeneratedColumn<String>(
       'extra', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _chainIdMeta = const VerificationMeta('chainId');
-  late final GeneratedColumn<String?> chainId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> chainId = GeneratedColumn<String>(
       'chain_id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _chainSymbolMeta =
       const VerificationMeta('chainSymbol');
-  late final GeneratedColumn<String?> chainSymbol = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> chainSymbol = GeneratedColumn<String>(
       'chain_symbol', aliasedName, true,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       $customConstraints: '');
   final VerificationMeta _chainLogoMeta = const VerificationMeta('chainLogo');
-  late final GeneratedColumn<String?> chainLogo = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> chainLogo = GeneratedColumn<String>(
       'chain_logo', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _chainNameMeta = const VerificationMeta('chainName');
-  late final GeneratedColumn<String?> chainName = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> chainName = GeneratedColumn<String>(
       'chain_name', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -1325,8 +1296,29 @@ class Assets extends Table with TableInfo<Assets, Asset> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Asset map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Asset.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Asset(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      logo: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}logo'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      price: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}price'])!,
+      symbol: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}symbol']),
+      extra: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}extra']),
+      chainId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}chain_id'])!,
+      chainSymbol: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}chain_symbol']),
+      chainLogo: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}chain_logo'])!,
+      chainName: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}chain_name'])!,
+    );
   }
 
   @override
@@ -1341,14 +1333,15 @@ class Assets extends Table with TableInfo<Assets, Asset> {
 }
 
 abstract class _$MixinDatabase extends GeneratedDatabase {
-  _$MixinDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$MixinDatabase(QueryExecutor e) : super(e);
   _$MixinDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final Pairs pairs = Pairs(this);
   late final Assets assets = Assets(this);
   late final PairDao pairDao = PairDao(this as MixinDatabase);
   late final AssetDao assetDao = AssetDao(this as MixinDatabase);
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, dynamic>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [pairs, assets];
 }

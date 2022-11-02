@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as forswap;
+import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 import 'package:vrouter/vrouter.dart';
 
 import './blaze.dart';
@@ -19,16 +19,32 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   AppServices({
     required this.vRouterStateKey,
   }) {
-    bot = sdk.Client(
-        accessToken: accessToken,
-        interceptors: interceptors,
-        httpLogLevel: null);
+    if (useFennec) {
+      bot = sdk.Client(
+          userId: fennecUserId,
+          sessionId: fennecSessionId,
+          privateKey: fennecPrivateKey,
+          // scp: authScope,
+          interceptors: interceptors,
+          httpLogLevel: null);
+    }
+    if (useMixinMessager) {
+      bot = sdk.Client(
+          accessToken: accessToken,
+          interceptors: interceptors,
+          httpLogLevel: null);
+    }
     scheduleMicrotask(() async {
-      if (isLogin) {
+      if (isLogin || useFennec) {
         try {
           final response = await bot.accountApi.getMe();
-          await setAuth(
-              Auth(accessToken: accessToken!, account: response.data));
+          if (useFennec) {
+            await setAuth(Auth(accessToken: 'fennec', account: response.data));
+          }
+          if (useMixinMessager) {
+            await setAuth(
+                Auth(accessToken: accessToken!, account: response.data));
+          }
         } catch (error) {
           d('refresh account failed. $error');
         }
@@ -36,12 +52,22 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       await _initDatabase();
       _initCompleter.complete();
     });
-    fswap = forswap.Client(
-        BaseOptions(headers: {'Authorization': 'Bearer $accessToken'}));
-    mc = MixinClient();
-    Timer.periodic(const Duration(seconds: 5), (timer) async {
-      await updatePairs();
-    });
+    if (useFennec) {
+      fswap = mifiswap.Client(
+        userId: fennecUserId,
+        sessionId: fennecSessionId,
+        privateKey: fennecPrivateKey,
+        scp: authScope,
+        interceptors: interceptors,
+      );
+    }
+    if (useMixinMessager) {
+      fswap = mifiswap.Client(accessToken: accessToken);
+      mc = MixinClient();
+    }
+    // Timer.periodic(const Duration(seconds: 5), (timer) async {
+    //   await updatePairs();
+    // });
   }
 
   List<InterceptorsWrapper> get interceptors => [
@@ -63,7 +89,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
 
   final GlobalKey<VRouterState> vRouterStateKey;
   late sdk.Client bot;
-  late forswap.Client fswap;
+  late mifiswap.Client fswap;
   late MixinClient mc;
 
   final _initCompleter = Completer();
@@ -82,60 +108,87 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   }
 
   Future<void> login(String oauthCode) async {
-    final response = await fswap.authorization(oauthCode);
+    if (useFennec) {
+      return;
+    }
 
-    final scope = response.data?.scope ?? '';
+    final myDio = Dio();
+    myDio.options.baseUrl = mifiswapOauthUrl;
+    myDio.options.responseType = ResponseType.json;
+
+    final response = await myDio.post<Map<String, dynamic>>(
+      '/oauth/token',
+      data: {
+        'code': oauthCode,
+      },
+      options: Options(contentType: 'application/x-www-form-urlencoded'),
+    );
+
+    final rsp = response.data?['data'] as Map<String, dynamic>?;
+
+    if (rsp == null) {
+      throw ArgumentError('scope');
+    }
+
+    final scope = (rsp['scope'] as String?) ?? '';
     if (!scope.contains('ASSETS:READ')) {
       throw ArgumentError('scope');
     }
 
-    final token = response.data?.token ?? '';
+    final token = (rsp['access_token'] as String?) ?? '';
 
-    final _bot = sdk.Client(accessToken: token, interceptors: interceptors);
+    final bot0 = sdk.Client(accessToken: token, interceptors: interceptors);
 
-    final mixinResponse = await _bot.accountApi.getMe();
+    final mixinResponse = await bot0.accountApi.getMe();
 
     await setAuth(Auth(accessToken: token, account: mixinResponse.data));
 
-    bot = _bot;
-    fswap = forswap.Client(
-        BaseOptions(headers: {'Authorization': 'Bearer $token'}));
+    bot = bot0;
+    fswap = mifiswap.Client(accessToken: token);
     // await _initDatabase();
     notifyListeners();
   }
 
   Future<void> _initDatabase() async {
-    // if (accessToken == null) return;
     i('init database start');
-    // _mixinDatabase = await constructDb(auth!.account.identityNumber);
-    _mixinDatabase = await constructDb('4swap');
+    _mixinDatabase = await constructDb('MifiSwap');
     i('init database done');
     notifyListeners();
   }
 
   void connect(bool Function(String?, String?) callback) {
-    mc.connect('a753e0eb-3010-4c4a-a7b2-a7bda4063f62', authScope, callback);
+    if (useFennec) {
+      return;
+    }
+    mc.connect(mifiswapClientId, authScope, callback);
   }
 
   Future<void> updatePairs() async {
-    final list = await Future.wait([
-      fswap.readAssets(),
-      fswap.readPairs(),
-    ]);
-    final assetList =
-        (list.first as forswap.UniResponse<forswap.AssetList>).data;
-    final pairList = (list.last as forswap.UniResponse<forswap.PairList>).data;
-    final assets = assetList?.assets
+    final pairList = await fswap.readPairs();
+    final pairs = pairList.data?.pairs ?? [];
+    await mixinDatabase.transaction(() async {
+      await mixinDatabase.pairDao.insertAllOnConflictUpdate(pairs);
+    });
+  }
+
+  Future<void> updateAssets() async {
+    final assetList = await fswap.readAssets();
+    final assets = assetList.data?.assets
         .where((asset) => !(asset.symbol ?? '').contains('-'))
         .toList();
-    final pairs = pairList?.pairs;
     await mixinDatabase.transaction(() async {
-      await mixinDatabase.pairDao.insertAllOnConflictUpdate(pairs ?? []);
       await mixinDatabase.assetDao.insertAllOnConflictUpdate(assets ?? []);
     });
   }
 
-  // Future<forswap.Asset> updateAsset(String id) async {
+  Future<void> updatePairsAndAssets() async {
+    await Future.wait([
+      updateAssets(),
+      updatePairs(),
+    ]);
+  }
+
+  // Future<mifiswap.Asset> updateAsset(String id) async {
   //   final asset = (await fswap.readAsset(id)).data;
   //   await mixinDatabase.assetDao.insert(asset);
   //   return asset;
@@ -144,9 +197,9 @@ class AppServices extends ChangeNotifier with EquatableMixin {
   @override
   Future<void> dispose() async {
     super.dispose();
-    final __mixinDatabase = _mixinDatabase;
+    final mixinDatabase0 = _mixinDatabase;
     _mixinDatabase = null;
-    await __mixinDatabase?.close();
+    await mixinDatabase0?.close();
   }
 
   @override

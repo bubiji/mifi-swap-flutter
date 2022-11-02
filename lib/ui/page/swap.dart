@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
-import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as forswap;
+import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/mixin_database.dart';
 import '../../service/profile/profile_manager.dart';
 import '../../util/asset.dart';
+import '../../util/constants.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
 import '../../util/logger.dart';
@@ -19,7 +20,7 @@ import '../../util/pair.dart';
 import '../../util/r.dart';
 // import '../router/mixin_routes.dart';
 import '../widget/account.dart';
-import '../widget/auth.dart';
+import '../widget/connect_wallet.dart';
 import '../widget/mixin_bottom_sheet.dart';
 import '../widget/search_asset_list.dart';
 import '../widget/swap_code.dart';
@@ -45,7 +46,7 @@ class Swap extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useMemoizedFuture(() => context.appServices.updatePairs());
+    useMemoizedFuture(() => context.appServices.updatePairsAndAssets());
 
     final inputParam =
         useQueryParameter(kQueryParameterInput, path: context.path);
@@ -80,7 +81,7 @@ class Swap extends HookWidget {
       return Scaffold(
           backgroundColor: context.theme.background,
           appBar: const TopAppBar(),
-          body: const Center(child: Text('Loadding...')));
+          body: Center(child: Text(context.l10n.loadding)));
     }
 
     final inputAssetId = useMemoized(() {
@@ -237,34 +238,76 @@ class Swap extends HookWidget {
       assert(preOrderMeta.value != null, 'PreOrderMeta should not be null');
       final orderMeta = preOrderMeta.value!;
       final followId = uuid.v4();
-      final action = forswap.ActionProtoSwapCrypto(
+      final action = mifiswap.ActionProtoSwapCrypto(
         receiverId: id,
         followId: followId,
         fillAssetId: outputAsset.asset.id,
         routes: orderMeta.order.routes,
         minimum: orderMeta.minReceivedText,
       );
-      print(action);
       final rsp = await context.appServices.fswap.createAction(
           action.toString(), inputController.text, inputAsset.asset.id);
       print(rsp);
       print('swap');
-      final codeUrl = rsp.data?.codeUrl ?? '';
-
-      if (codeUrl.isNotEmpty) {
-        await launchUrl(Uri.parse(codeUrl));
+      if (useFennec) {
+        final actionStr = rsp.data?.action ?? '';
+        if (actionStr.isEmpty) {
+          return;
+        }
+        final iterator = DateTime.now().microsecondsSinceEpoch * 1000;
+        final encryptedPin = sdk.encryptPin(
+          fennecPin,
+          fennecPinToken,
+          fennecPrivateKey,
+          iterator,
+        );
+        // final rsp = await context.appServices.bot.accountApi.verifyPin(encryptedPin);
+        // print(rsp.data);
+        // final rsp = await context.appServices.bot.transferApi
+        //     .pay(sdk.TransferRequest(
+        // final rsp =
+        await context.appServices.bot.multisigApi
+            .transaction(sdk.RawTransactionRequest(
+          assetId: inputAsset.asset.id,
+          amount: inputController.text,
+          // opponentId: mifiswapClientId,
+          opponentMultisig: sdk.OpponentMultisig(
+            receivers: [
+              'a753e0eb-3010-4c4a-a7b2-a7bda4063f62',
+              '099627f8-4031-42e3-a846-006ee598c56e',
+              'aefbfd62-727d-4424-89db-ae41f75d2e04',
+              'd68ca71f-0e2c-458a-bb9c-1d6c2eed2497',
+              'e4bc0740-f8fe-418c-ae1b-32d9926f5863',
+            ],
+            threshold: 3,
+          ),
+          pin: encryptedPin,
+          traceId: followId,
+          memo: actionStr,
+        ));
+        // print(rsp);
+        // print(rsp.data);
+        // print(rsp.data.status);
+        // print('swap');
       }
 
-      await showMixinBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) => SwapCode(
-              codeUrl: codeUrl,
-              inputString:
-                  inputController.text + ' ${inputAsset.asset.symbol}'.overflow,
-              followId: followId,
-              logo: inputAsset.asset.logo,
-              chainLogo: inputAsset.asset.chainLogo));
+      if (useMixinMessager) {
+        final codeUrl = rsp.data?.codeUrl ?? '';
+        if (codeUrl.isNotEmpty) {
+          await launchUrl(Uri.parse(codeUrl));
+        }
+
+        await showMixinBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            builder: (BuildContext context) => SwapCode(
+                codeUrl: codeUrl,
+                inputString: inputController.text +
+                    ' ${inputAsset.asset.symbol}'.overflow,
+                followId: followId,
+                logo: inputAsset.asset.logo,
+                chainLogo: inputAsset.asset.chainLogo));
+      }
     }
 
     final showReverse = useState<bool>(false);
@@ -273,8 +316,8 @@ class Swap extends HookWidget {
       showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text(
-            '确认',
+          title: Text(
+            context.l10n.confirmation,
             textAlign: TextAlign.center,
           ),
           titlePadding: const EdgeInsets.all(20),
@@ -347,11 +390,11 @@ class Swap extends HookWidget {
               const TextStyle(color: Colors.black54, fontSize: 14),
           actions: <Widget>[
             TextButton(
-              child: const Text('确认'),
+              child: Text(context.l10n.continueText),
               onPressed: () => {Navigator.of(context).pop(false), handleSwap()},
             ),
             TextButton(
-              child: const Text('撤销'),
+              child: Text(context.l10n.cancel),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
@@ -395,7 +438,7 @@ class Swap extends HookWidget {
             SliverToBoxAdapter(
                 child: Container(
               margin: const EdgeInsetsDirectional.all(10),
-              child: const Text('Swap'),
+              child: Text(context.l10n.swap),
             )),
             SliverToBoxAdapter(
                 child: Container(
@@ -471,7 +514,7 @@ class Swap extends HookWidget {
                                         onChanged: (value) =>
                                             handleGetPreOrder(value, null),
                                         decoration: InputDecoration(
-                                          hintText: 'From',
+                                          hintText: context.l10n.from,
                                           contentPadding: EdgeInsets.zero,
                                           border: OutlineInputBorder(
                                               borderRadius:
@@ -488,22 +531,46 @@ class Swap extends HookWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     if (isLogin) ...[
-                                      Text(balance[inputAsset.asset.id] ?? '0'),
+                                      InkResponse(
+                                          radius: 24,
+                                          onTap: () {
+                                            inputController.text =
+                                                balance[inputAsset.asset.id] ??
+                                                    '0';
+                                            handleGetPreOrder(
+                                                balance[inputAsset.asset.id] ??
+                                                    '0',
+                                                null);
+                                          },
+                                          child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Text(balance[
+                                                        inputAsset.asset.id] ??
+                                                    '0'),
+                                                const SizedBox(width: 6),
+                                                SvgPicture.asset(
+                                                  R.resourcesUprightSvg,
+                                                  height: 10,
+                                                  width: 10,
+                                                  color: context
+                                                      .colorScheme.primaryText,
+                                                ),
+                                              ])),
                                     ] else ...[
                                       InkResponse(
                                           radius: 24,
-                                          onTap: () =>
-                                              showMixinBottomSheet<void>(
-                                                  context: context,
-                                                  isScrollControlled: true,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          const Auth()),
+                                          onTap: () => showMixinBottomSheet<
+                                                  void>(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              builder: (BuildContext context) =>
+                                                  const ConnectWallet()),
                                           child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                  'Connect Wallet',
+                                                  context.l10n.connectWallet,
                                                   style: TextStyle(
                                                     color: context.colorScheme
                                                         .primaryText,
@@ -598,7 +665,7 @@ class Swap extends HookWidget {
                                         onChanged: (value) =>
                                             handleGetPreOrder(null, value),
                                         decoration: InputDecoration(
-                                          hintText: 'To',
+                                          hintText: context.l10n.to,
                                           contentPadding: EdgeInsets.zero,
                                           border: OutlineInputBorder(
                                               borderRadius:
@@ -615,23 +682,46 @@ class Swap extends HookWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     if (isLogin) ...[
-                                      Text(
-                                          balance[outputAsset.asset.id] ?? '0'),
+                                      InkResponse(
+                                          radius: 24,
+                                          onTap: () {
+                                            outputController.text =
+                                                balance[outputAsset.asset.id] ??
+                                                    '0';
+                                            handleGetPreOrder(
+                                                null,
+                                                balance[outputAsset.asset.id] ??
+                                                    '0');
+                                          },
+                                          child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Text(balance[
+                                                        outputAsset.asset.id] ??
+                                                    '0'),
+                                                const SizedBox(width: 6),
+                                                SvgPicture.asset(
+                                                  R.resourcesUprightSvg,
+                                                  height: 10,
+                                                  width: 10,
+                                                  color: context
+                                                      .colorScheme.primaryText,
+                                                ),
+                                              ])),
                                     ] else ...[
                                       InkResponse(
                                           radius: 24,
-                                          onTap: () =>
-                                              showMixinBottomSheet<void>(
-                                                  context: context,
-                                                  isScrollControlled: true,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          const Auth()),
+                                          onTap: () => showMixinBottomSheet<
+                                                  void>(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              builder: (BuildContext context) =>
+                                                  const ConnectWallet()),
                                           child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                  'Connect Wallet',
+                                                  context.l10n.connectWallet,
                                                   style: TextStyle(
                                                     color: context.colorScheme
                                                         .primaryText,
@@ -676,6 +766,8 @@ class Swap extends HookWidget {
                               final temp = inputController.text;
                               inputController.text = outputController.text;
                               outputController.text = temp;
+                              handleGetPreOrder(
+                                  inputController.text, outputController.text);
                             }),
                       ),
                     ]))),
@@ -689,7 +781,7 @@ class Swap extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Price',
+                                context.l10n.price,
                                 style: TextStyle(
                                   color: context.colorScheme.thirdText,
                                   fontSize: 14,
@@ -728,7 +820,7 @@ class Swap extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Min Recevied',
+                                context.l10n.minRecevied,
                                 style: TextStyle(
                                   color: context.colorScheme.thirdText,
                                   fontSize: 14,
@@ -751,7 +843,7 @@ class Swap extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Fee',
+                                context.l10n.fee,
                                 style: TextStyle(
                                   color: context.colorScheme.thirdText,
                                   fontSize: 14,
@@ -774,7 +866,7 @@ class Swap extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Price Impact',
+                                context.l10n.priceImpact,
                                 style: TextStyle(
                                   color: context.colorScheme.thirdText,
                                   fontSize: 14,
@@ -798,7 +890,7 @@ class Swap extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Route',
+                                context.l10n.route,
                                 style: TextStyle(
                                   color: context.colorScheme.thirdText,
                                   fontSize: 14,
@@ -839,7 +931,7 @@ class Swap extends HookWidget {
                           color: Color(0xFFcccccc),
                         )),
                   ),
-                  child: const Text('Swap'),
+                  child: Text(context.l10n.swap),
                 ),
               ))),
             ] else ...[
@@ -852,7 +944,7 @@ class Swap extends HookWidget {
                   onPressed: () => showMixinBottomSheet<void>(
                       context: context,
                       isScrollControlled: true,
-                      builder: (BuildContext context) => const Auth()),
+                      builder: (BuildContext context) => const ConnectWallet()),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -860,7 +952,7 @@ class Swap extends HookWidget {
                           color: Color(0xFFcccccc),
                         )),
                   ),
-                  child: const Text('Connect Wallet'),
+                  child: Text(context.l10n.connectWallet),
                 ),
               ))),
             ],

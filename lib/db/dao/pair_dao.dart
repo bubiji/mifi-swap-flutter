@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart';
-import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as forswap;
+import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 
 import '../mixin_database.dart';
 
 part 'pair_dao.g.dart';
 
-extension PairConverter on forswap.Pair {
+extension PairConverter on mifiswap.Pair {
   PairsCompanion get asPairsCompanion => PairsCompanion.insert(
         baseAmount: baseAmount,
         baseAssetId: baseAssetId,
@@ -43,7 +43,7 @@ class PairDao extends DatabaseAccessor<MixinDatabase> with _$PairDaoMixin {
 
   Future<int> deletePair(Pair pair) => delete(db.pairs).delete(pair);
 
-  Future<void> insertAllOnConflictUpdate(List<forswap.Pair> pairs) async {
+  Future<void> insertAllOnConflictUpdate(List<mifiswap.Pair> pairs) async {
     await db.delete(db.pairs).go();
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(

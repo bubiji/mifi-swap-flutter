@@ -76,13 +76,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHidden": m0,
         "alreadyShown": m1,
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
+        "and": MessageLookupByLibrary.simpleMessage("and"),
         "assetTrending": MessageLookupByLibrary.simpleMessage("Trending"),
         "assetType": MessageLookupByLibrary.simpleMessage("Asset Type"),
         "assets": MessageLookupByLibrary.simpleMessage("Assets"),
         "authHint": MessageLookupByLibrary.simpleMessage(
             "Read-only authorization cannot use your assets, please rest assured"),
         "authSlogan": MessageLookupByLibrary.simpleMessage(
-            "4swap is a user-friendly, secure and powerful multi-chain digital wallet."),
+            "MifiSwap is a user-friendly, secure and powerful multi-chain digital wallet."),
         "authTips": MessageLookupByLibrary.simpleMessage(
             "An open source cryptocurrency wallet"),
         "authorize": MessageLookupByLibrary.simpleMessage("Sign in with Mixin"),
@@ -100,6 +101,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "collectionItemCount": m4,
         "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
+        "confirmation": MessageLookupByLibrary.simpleMessage("Confirmation"),
+        "connectWallet": MessageLookupByLibrary.simpleMessage("Connect Wallet"),
+        "connectinfo": MessageLookupByLibrary.simpleMessage(
+            "By connecting your wallet you agree to"),
         "contact": MessageLookupByLibrary.simpleMessage("Contact"),
         "contactReadFailed":
             MessageLookupByLibrary.simpleMessage("Failed to read contact list"),
@@ -139,11 +144,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("EOS contract address"),
         "errorNoCamera": MessageLookupByLibrary.simpleMessage("No camera"),
         "fee": MessageLookupByLibrary.simpleMessage("Fee"),
+        "fees": MessageLookupByLibrary.simpleMessage("24h Fees"),
         "filterAll": MessageLookupByLibrary.simpleMessage("All"),
         "filterApply": MessageLookupByLibrary.simpleMessage("Apply"),
         "filterBy": MessageLookupByLibrary.simpleMessage("FILTER BY"),
         "filterTitle": MessageLookupByLibrary.simpleMessage("Filter"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
+        "globalVol": MessageLookupByLibrary.simpleMessage("24h Global Vol"),
         "goPay": MessageLookupByLibrary.simpleMessage("Go pay"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "hiddenAssets": MessageLookupByLibrary.simpleMessage("Hidden Assets"),
@@ -151,15 +158,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "hideSmallAssets":
             MessageLookupByLibrary.simpleMessage("Hide small assets"),
         "incomplete": MessageLookupByLibrary.simpleMessage("Incomplete"),
+        "issueTime": MessageLookupByLibrary.simpleMessage("Issue Time"),
         "linkGenerated": MessageLookupByLibrary.simpleMessage("Link generated"),
+        "liquidity": MessageLookupByLibrary.simpleMessage("Liquidity"),
+        "loadding": MessageLookupByLibrary.simpleMessage("Loadding..."),
+        "marketCap": MessageLookupByLibrary.simpleMessage("Market Cap"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoHint": MessageLookupByLibrary.simpleMessage("Memo"),
+        "mifiswap": MessageLookupByLibrary.simpleMessage("MifiSwap"),
+        "minRecevied": MessageLookupByLibrary.simpleMessage("Min Recevied"),
         "minerFee": MessageLookupByLibrary.simpleMessage("Miner Fee"),
         "minimumReserve":
             MessageLookupByLibrary.simpleMessage("Minimum reserve:"),
         "minimumWithdrawal":
             MessageLookupByLibrary.simpleMessage("Minimum withdrawal:"),
-        "forswap": MessageLookupByLibrary.simpleMessage("4swap"),
         "networkFee": MessageLookupByLibrary.simpleMessage("Network fee:"),
         "networkFeeTip": MessageLookupByLibrary.simpleMessage(
             "Charged by third party service provider. Paid directly to Ethereum miners to ensure transactions are completed on Ethereum. Network fees vary based on immediate market conditions."),
@@ -180,6 +192,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notice": MessageLookupByLibrary.simpleMessage("Notice"),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "overview": MessageLookupByLibrary.simpleMessage("Overview"),
         "paid": MessageLookupByLibrary.simpleMessage("Paid"),
         "paidInMixin":
             MessageLookupByLibrary.simpleMessage("Have you paid in Mixin?"),
@@ -187,6 +200,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "If you have paid via Mixin, please be patient."),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "pendingConfirmations": m9,
+        "pools": MessageLookupByLibrary.simpleMessage("Pools"),
+        "price": MessageLookupByLibrary.simpleMessage("Price"),
+        "priceImpact": MessageLookupByLibrary.simpleMessage("Price Impact"),
+        "privaryPolicy": MessageLookupByLibrary.simpleMessage("Privary Policy"),
         "raw": MessageLookupByLibrary.simpleMessage("Raw"),
         "reauthorize": MessageLookupByLibrary.simpleMessage("Reauthorize"),
         "rebate": MessageLookupByLibrary.simpleMessage("Rebate"),
@@ -201,7 +218,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestPaymentAmount": m10,
         "requestPaymentGeneratedTips": MessageLookupByLibrary.simpleMessage(
             "A request payment link has been generated, please send it to the specified contact."),
+        "route": MessageLookupByLibrary.simpleMessage("Route"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "scanTopay": MessageLookupByLibrary.simpleMessage("Scan to pay"),
+        "scanandpay": MessageLookupByLibrary.simpleMessage(
+            "Scan the QRcode, then confirm the payment"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "selectContactOrAddress":
             MessageLookupByLibrary.simpleMessage("Choose a address or contact"),
@@ -215,16 +236,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
         "slippageOver": m11,
         "sortBy": MessageLookupByLibrary.simpleMessage("SORT BY"),
+        "success": MessageLookupByLibrary.simpleMessage("Success"),
         "swap": MessageLookupByLibrary.simpleMessage("Swap"),
         "swapDisclaimer": MessageLookupByLibrary.simpleMessage(
             "Services provided by MixSwap"),
+        "swapSuccessfully":
+            MessageLookupByLibrary.simpleMessage("Swap Successfully"),
         "swapType": MessageLookupByLibrary.simpleMessage("Swap type"),
         "symbol": MessageLookupByLibrary.simpleMessage("Symbol"),
         "tagHint": MessageLookupByLibrary.simpleMessage("Tag"),
+        "termsOfService":
+            MessageLookupByLibrary.simpleMessage("Terms of Service"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "to": MessageLookupByLibrary.simpleMessage("To"),
         "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
+        "totalLiquidity":
+            MessageLookupByLibrary.simpleMessage("Total Liquidity"),
+        "totalSupply": MessageLookupByLibrary.simpleMessage("Total Supply"),
         "trace": MessageLookupByLibrary.simpleMessage("Trace"),
+        "trades": MessageLookupByLibrary.simpleMessage("24h Trades"),
         "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
         "transactionChecking": MessageLookupByLibrary.simpleMessage("Checking"),
         "transactionDone": MessageLookupByLibrary.simpleMessage("Done"),
@@ -248,27 +278,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "transfer": MessageLookupByLibrary.simpleMessage("Transfer"),
         "transferDetail":
             MessageLookupByLibrary.simpleMessage("Transfer details"),
+        "turnover": MessageLookupByLibrary.simpleMessage("24h Turnover"),
         "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
         "unpaid": MessageLookupByLibrary.simpleMessage("Unpaid"),
+        "volume": MessageLookupByLibrary.simpleMessage("24h Volume"),
         "waitingActionDone":
             MessageLookupByLibrary.simpleMessage("Waiting action done..."),
         "walletTransactionCurrentValue": m12,
         "walletTransactionThatTimeNoValue":
             MessageLookupByLibrary.simpleMessage("value then N/A"),
         "walletTransactionThatTimeValue": m13,
+        "website": MessageLookupByLibrary.simpleMessage("Website"),
         "wireServiceTip": MessageLookupByLibrary.simpleMessage(
             "This service is provided by Wyre. We act as a conduit only and do not charge additional fees."),
         "withdrawal": MessageLookupByLibrary.simpleMessage("Withdrawal"),
         "withdrawalMemoHint":
             MessageLookupByLibrary.simpleMessage("Memo (Optional)"),
         "wyreServiceStatement":
-            MessageLookupByLibrary.simpleMessage("Service statement"),
-        "overview": MessageLookupByLibrary.simpleMessage("Overview"),
-        "totalLiquidity":
-            MessageLookupByLibrary.simpleMessage("Total Liquidity"),
-        "globalVol": MessageLookupByLibrary.simpleMessage("24h Global Vol"),
-        "trades": MessageLookupByLibrary.simpleMessage("24h Trades"),
-        "fees": MessageLookupByLibrary.simpleMessage("24h fees"),
-        "turnover": MessageLookupByLibrary.simpleMessage("24h Turnover")
+            MessageLookupByLibrary.simpleMessage("Service statement")
       };
 }

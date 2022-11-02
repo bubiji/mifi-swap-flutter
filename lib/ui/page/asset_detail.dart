@@ -2,11 +2,11 @@ import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as forswap;
+import 'package:intl/intl.dart';
+import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
-// import '../../util/asset.dart';
 import '../../util/hook.dart';
 import '../../util/pair.dart';
 import '../router/mixin_routes.dart';
@@ -23,7 +23,7 @@ enum _Tab {
   overview,
 }
 
-forswap.AssetExtra noAssetExtra() => forswap.AssetExtra(
+mifiswap.AssetExtra noAssetExtra() => mifiswap.AssetExtra(
       circulation: '',
       explorer: '',
       intro: {},
@@ -38,10 +38,6 @@ class AssetDetail extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // assert(context.appServices.databaseInitialized);
-
-    useMemoizedFuture(() => context.appServices.updatePairs());
-
     final id = usePathParameter('id', path: assetDetailPath);
 
     final sortParam =
@@ -116,13 +112,13 @@ class AssetDetail extends HookWidget {
       if (info == null) {
         return noAssetExtra();
       }
-      return forswap.AssetExtra.fromJson(
+      return mifiswap.AssetExtra.fromJson(
           convert.jsonDecode(info) as Map<String, dynamic>);
     }, [data.extra]);
 
     Widget buildGrid() {
       final tiles = <Widget>[];
-      for (final item in info.intro['zh'] ?? <String>[]) {
+      for (final item in info.intro[Intl.defaultLocale] ?? <String>[]) {
         tiles.add(Text(item));
       }
       return Column(children: tiles);
@@ -160,7 +156,7 @@ class AssetDetail extends HookWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    'Price',
+                    context.l10n.price,
                     style: TextStyle(
                       color: context.colorScheme.thirdText,
                       fontSize: 14,
@@ -211,7 +207,7 @@ class AssetDetail extends HookWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '网址',
+                                  context.l10n.website,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: context.colorScheme.thirdText),
@@ -234,7 +230,7 @@ class AssetDetail extends HookWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                       Text(
-                                        '总供应量',
+                                        context.l10n.totalSupply,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color:
@@ -255,7 +251,7 @@ class AssetDetail extends HookWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                       Text(
-                                        '市值',
+                                        context.l10n.marketCap,
                                         style: TextStyle(
                                             color:
                                                 context.colorScheme.thirdText),
@@ -300,7 +296,7 @@ class AssetDetail extends HookWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                       Text(
-                                        '价格',
+                                        context.l10n.price,
                                         style: TextStyle(
                                             color:
                                                 context.colorScheme.thirdText),
@@ -369,7 +365,7 @@ class AssetDetail extends HookWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                       Text(
-                                        '发布时间',
+                                        context.l10n.issueTime,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color:
@@ -411,15 +407,15 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
       keys: [selectedTab],
     );
     useEffect(() {
-      void _onTabChanged() {
+      void onTabChanged() {
         final params = <String, String>{};
         params[kQueryParameterTab] = _Tab.values[controller.index].name;
         context
             .replace(Uri(path: context.path).replace(queryParameters: params));
       }
 
-      controller.addListener(_onTabChanged);
-      return () => controller.removeListener(_onTabChanged);
+      controller.addListener(onTabChanged);
+      return () => controller.removeListener(onTabChanged);
     });
     return SizedBox(
       height: 60,
@@ -434,9 +430,9 @@ class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
         ),
         labelColor: context.colorScheme.primaryText,
         unselectedLabelColor: const Color(0xFFBCBEC3),
-        tabs: const [
-          Tab(text: 'Swap'),
-          Tab(text: 'Overview'),
+        tabs: [
+          Tab(text: context.l10n.swap),
+          Tab(text: context.l10n.overview),
         ],
         indicatorSize: TabBarIndicatorSize.label,
         indicatorWeight: 3,

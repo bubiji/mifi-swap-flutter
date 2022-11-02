@@ -1,11 +1,11 @@
 import 'package:drift/drift.dart';
-import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as forswap;
+import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 
 import '../mixin_database.dart';
 
 part 'asset_dao.g.dart';
 
-extension AssetConverter on forswap.Asset {
+extension AssetConverter on mifiswap.Asset {
   AssetsCompanion get asAssetsCompanion => AssetsCompanion.insert(
         id: id,
         logo: logo,
@@ -25,7 +25,7 @@ extension AssetConverter on forswap.Asset {
 class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
   AssetDao(MixinDatabase db) : super(db);
 
-  Future<int> insert(forswap.Asset asset) =>
+  Future<int> insert(mifiswap.Asset asset) =>
       into(db.assets).insertOnConflictUpdate(asset.asAssetsCompanion);
 
   Future<void> insertAll(List<Asset> assets) async => batch((batch) {
@@ -34,7 +34,7 @@ class AssetDao extends DatabaseAccessor<MixinDatabase> with _$AssetDaoMixin {
 
   Future<int> deleteAsset(Asset asset) => delete(db.assets).delete(asset);
 
-  Future<void> insertAllOnConflictUpdate(List<forswap.Asset> assets) async {
+  Future<void> insertAllOnConflictUpdate(List<mifiswap.Asset> assets) async {
     await db.delete(db.assets).go();
     await db.batch((batch) {
       batch.insertAllOnConflictUpdate(

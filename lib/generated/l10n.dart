@@ -820,20 +820,20 @@ class L10n {
     );
   }
 
-  /// `4swap`
-  String get forswap {
+  /// `MifiSwap`
+  String get mifiswap {
     return Intl.message(
-      '4swap',
-      name: 'forswap',
+      'MifiSwap',
+      name: 'mifiswap',
       desc: '',
       args: [],
     );
   }
 
-  /// `4swap is a user-friendly, secure and powerful multi-chain digital wallet.`
+  /// `MifiSwap is a user-friendly, secure and powerful multi-chain digital wallet.`
   String get authSlogan {
     return Intl.message(
-      '4swap is a user-friendly, secure and powerful multi-chain digital wallet.',
+      'MifiSwap is a user-friendly, secure and powerful multi-chain digital wallet.',
       name: 'authSlogan',
       desc: '',
       args: [],
@@ -1630,7 +1630,7 @@ class L10n {
     );
   }
 
-  /// `24h Global Vol.`
+  /// `24h Global Vol`
   String get globalVol {
     return Intl.message(
       '24h Global Vol',
@@ -1640,7 +1640,7 @@ class L10n {
     );
   }
 
-  /// `24h Trades.`
+  /// `24h Trades`
   String get trades {
     return Intl.message(
       '24h Trades',
@@ -1660,11 +1660,231 @@ class L10n {
     );
   }
 
-  /// `24h Turnover.`
+  /// `24h Turnover`
   String get turnover {
     return Intl.message(
       '24h Turnover',
       name: 'turnover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get price {
+    return Intl.message(
+      'Price',
+      name: 'price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Liquidity`
+  String get liquidity {
+    return Intl.message(
+      'Liquidity',
+      name: 'liquidity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `24h Volume`
+  String get volume {
+    return Intl.message(
+      '24h Volume',
+      name: 'volume',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Website`
+  String get website {
+    return Intl.message(
+      'Website',
+      name: 'website',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Supply`
+  String get totalSupply {
+    return Intl.message(
+      'Total Supply',
+      name: 'totalSupply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market Cap`
+  String get marketCap {
+    return Intl.message(
+      'Market Cap',
+      name: 'marketCap',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Issue Time`
+  String get issueTime {
+    return Intl.message(
+      'Issue Time',
+      name: 'issueTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pools`
+  String get pools {
+    return Intl.message(
+      'Pools',
+      name: 'pools',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loadding...`
+  String get loadding {
+    return Intl.message(
+      'Loadding...',
+      name: 'loadding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect Wallet`
+  String get connectWallet {
+    return Intl.message(
+      'Connect Wallet',
+      name: 'connectWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Min Recevied`
+  String get minRecevied {
+    return Intl.message(
+      'Min Recevied',
+      name: 'minRecevied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price Impact`
+  String get priceImpact {
+    return Intl.message(
+      'Price Impact',
+      name: 'priceImpact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Route`
+  String get route {
+    return Intl.message(
+      'Route',
+      name: 'route',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmation`
+  String get confirmation {
+    return Intl.message(
+      'Confirmation',
+      name: 'confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan to pay`
+  String get scanTopay {
+    return Intl.message(
+      'Scan to pay',
+      name: 'scanTopay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan the QRcode, then confirm the payment`
+  String get scanandpay {
+    return Intl.message(
+      'Scan the QRcode, then confirm the payment',
+      name: 'scanandpay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swap Successfully`
+  String get swapSuccessfully {
+    return Intl.message(
+      'Swap Successfully',
+      name: 'swapSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By connecting your wallet you agree to`
+  String get connectinfo {
+    return Intl.message(
+      'By connecting your wallet you agree to',
+      name: 'connectinfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `and`
+  String get and {
+    return Intl.message(
+      'and',
+      name: 'and',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms of Service`
+  String get termsOfService {
+    return Intl.message(
+      'Terms of Service',
+      name: 'termsOfService',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privary Policy`
+  String get privaryPolicy {
+    return Intl.message(
+      'Privary Policy',
+      name: 'privaryPolicy',
       desc: '',
       args: [],
     );

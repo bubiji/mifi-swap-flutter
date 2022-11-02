@@ -193,16 +193,16 @@ class Curve {
     final ann = a * nCoins.asDecimal;
 
     for (var i = 0; i < 255; i++) {
-      var _dp = d;
-      xp.forEach((_x) {
-        _dp = ((_dp * d) / (_x * nCoins.asDecimal))
+      var dp0 = d;
+      xp.forEach((x0) {
+        dp0 = ((dp0 * d) / (x0 * nCoins.asDecimal))
             .toDecimal(scaleOnInfinitePrecision: 8);
       });
 
       dp = d;
       final d1 = (ann - one.asDecimal) * d;
-      final d2 = (nCoins.asDecimal + one.asDecimal) * _dp;
-      d = (((ann * sum + _dp * nCoins.asDecimal) * d) / (d1 + d2))
+      final d2 = (nCoins.asDecimal + one.asDecimal) * dp0;
+      d = (((ann * sum + dp0 * nCoins.asDecimal) * d) / (d1 + d2))
           .toDecimal(scaleOnInfinitePrecision: 8);
 
       final diff = d - dp;
@@ -265,10 +265,10 @@ class Curve {
     final x0 = x * v10e8;
     final y0 = y * v10e8;
     final dx0 = dx * v10e8;
-    final _d = d ?? getD([x0, y0]);
-    final _x = x0 + dx0;
-    final _y = getY(_d, _x);
-    final dy = (y0 - _y) / v10e8;
+    final d1 = d ?? getD([x0, y0]);
+    final x1 = x0 + dx0;
+    final y1 = getY(d1, x1);
+    final dy = (y0 - y1) / v10e8;
     return dy.toDecimal(scaleOnInfinitePrecision: 8);
   }
 
@@ -285,10 +285,10 @@ class Curve {
     final x0 = x * v10e8;
     final y0 = y * v10e8;
     final dy0 = dy * v10e8;
-    final _d = d ?? getD([x0, y0]);
-    final _y = y0 - dy0;
-    final _x = getX(_d, _y);
-    final dx = (_x - x0) / v10e8;
+    final d1 = d ?? getD([x0, y0]);
+    final y1 = y0 - dy0;
+    final x1 = getX(d1, y1);
+    final dx = (x1 - x0) / v10e8;
     return dx.toDecimal(scaleOnInfinitePrecision: 8);
   }
 
@@ -316,10 +316,10 @@ class Uniswap {
     required Decimal dx,
     Decimal? k,
   }) {
-    final _k = k ?? x * y;
-    final _x = x + dx;
-    final _y = (_k / _x).toDecimal(scaleOnInfinitePrecision: 8);
-    final dy = y - _y;
+    final k0 = k ?? x * y;
+    final x0 = x + dx;
+    final y0 = (k0 / x0).toDecimal(scaleOnInfinitePrecision: 8);
+    final dy = y - y0;
     return dy;
   }
 
@@ -334,10 +334,10 @@ class Uniswap {
     required Decimal dy,
     Decimal? k,
   }) {
-    final _k = k ?? x * y;
-    final _y = y - dy;
-    final _x = (_k / _y).toDecimal(scaleOnInfinitePrecision: 8);
-    final dx = _x - x;
+    final k0 = k ?? x * y;
+    final y0 = y - dy;
+    final x0 = (k0 / y0).toDecimal(scaleOnInfinitePrecision: 8);
+    final dx = x0 - x;
     return dx;
   }
 

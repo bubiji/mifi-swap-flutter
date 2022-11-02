@@ -81,7 +81,17 @@ extension PriceFormat on Decimal {
         .format(num.tryParse('$this'));
   }
 
-  String get toFiat {
+  String get toFiatZh {
+    var fait =
+        (this / Decimal.parse('10000')).toDecimal(scaleOnInfinitePrecision: 2);
+    if (fait > Decimal.one) {
+      return '\$${fait.toStringAsFixed(2)}万';
+    }
+    fait = (this / Decimal.one).toDecimal(scaleOnInfinitePrecision: 2);
+    return '\$${fait.toStringAsFixed(2)}';
+  }
+
+  String get toFiatEn {
     var fait = (this / Decimal.parse('1000000'))
         .toDecimal(scaleOnInfinitePrecision: 2);
     if (fait > Decimal.one) {
@@ -94,6 +104,14 @@ extension PriceFormat on Decimal {
     }
     fait = (this / Decimal.one).toDecimal(scaleOnInfinitePrecision: 2);
     return '\$${fait.toStringAsFixed(2)}';
+  }
+
+  String get toFiat {
+    if (Intl.defaultLocale == 'en') {
+      return toFiatEn;
+    } else {
+      return toFiatZh;
+    }
   }
 
   String get toPercentage {

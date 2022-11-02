@@ -63,7 +63,7 @@ class AssetHeader extends StatelessWidget {
             if (AssetHeaderType.assets == type)
               ActionChip(
                   label: Row(children: [
-                    const Text('Price'),
+                    Text(context.l10n.price),
                     const SizedBox(width: 8),
                     SizedBox(
                       width: 6,
@@ -81,7 +81,7 @@ class AssetHeader extends StatelessWidget {
             else
               ActionChip(
                   label: Row(children: [
-                    const Text('Liquidity'),
+                    Text(context.l10n.liquidity),
                     const SizedBox(width: 8),
                     SizedBox(
                       width: 6,
@@ -99,7 +99,7 @@ class AssetHeader extends StatelessWidget {
             const SizedBox(width: 8),
             ActionChip(
                 label: Row(children: [
-                  const Text('24h Volume'),
+                  Text(context.l10n.volume),
                   const SizedBox(width: 8),
                   SizedBox(
                     width: 6,
@@ -118,7 +118,7 @@ class AssetHeader extends StatelessWidget {
             if (AssetHeaderType.assets == type)
               ActionChip(
                   label: Row(children: [
-                    const Text('Liquidity'),
+                    Text(context.l10n.liquidity),
                     const SizedBox(width: 8),
                     SizedBox(
                       width: 6,
@@ -136,7 +136,7 @@ class AssetHeader extends StatelessWidget {
             else
               ActionChip(
                   label: Row(children: [
-                    const Text('24h Turnover'),
+                    Text(context.l10n.turnover),
                     const SizedBox(width: 8),
                     SizedBox(
                       width: 6,

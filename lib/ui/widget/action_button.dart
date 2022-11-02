@@ -25,9 +25,9 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _child = child;
+    var child0 = child;
     if (name?.isNotEmpty ?? false) {
-      _child = SvgPicture.asset(
+      child0 = SvgPicture.asset(
         name!,
         width: size,
         height: size,
@@ -39,7 +39,7 @@ class ActionButton extends StatelessWidget {
         opacity: 0.1,
         child: Padding(
           padding: padding,
-          child: _child,
+          child: child0,
         ),
       );
     }
@@ -48,7 +48,7 @@ class ActionButton extends StatelessWidget {
       radius: size,
       child: Padding(
         padding: padding,
-        child: _child,
+        child: child0,
       ),
     );
   }
