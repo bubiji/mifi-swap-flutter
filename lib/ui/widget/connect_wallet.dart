@@ -33,36 +33,36 @@ class _Body extends StatelessWidget {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(12.0),
-              child: Stack(
-                children: [
-                  Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(context.l10n.connectWallet,
-                                style: TextStyle(
-                                  color: context.colorScheme.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ))),
-                        InkWell(
-                            customBorder: const CircleBorder(),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(context.l10n.cancel,
-                                    style: TextStyle(
-                                      color: context.colorScheme.primaryText,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    )))),
-                      ])
-                ],
-              ),
+            child: Stack(
+              children: [
+                Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(context.l10n.connectWallet,
+                              style: TextStyle(
+                                color: context.colorScheme.primaryText,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ))),
+                      InkWell(
+                          customBorder: const CircleBorder(),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(context.l10n.cancel,
+                                  style: TextStyle(
+                                    color: context.colorScheme.primaryText,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  )))),
+                    ])
+              ],
+            ),
           ),
           const SizedBox(height: 4),
           InkResponse(
