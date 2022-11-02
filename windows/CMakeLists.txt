@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(forswap LANGUAGES CXX)
+project(mifiswap LANGUAGES CXX)
 
-set(BINARY_NAME "forswap")
+set(BINARY_NAME "mifiswap")
 
 cmake_policy(SET CMP0063 NEW)
 
