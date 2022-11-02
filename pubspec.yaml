@@ -34,7 +34,7 @@ dependencies:
 
   uniswap_sdk_dart:
     git:
-      url: git@github.com:bubiji/4swap_sdk_dart
+      url: https://github.com/bubiji/mifi_swap_dart_sdk.git
       ref: a4148727226ed3bb5c5b3a623d029885fd975c70
   mixin_bot_sdk_dart: ^0.3.3
   very_good_analysis: ^3.0.1
