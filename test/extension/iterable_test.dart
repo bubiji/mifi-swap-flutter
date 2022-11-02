@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:forswap/util/extension/extension.dart';
+import 'package:mifiswap/util/extension/extension.dart';
 
 void main() {
   test('test iterable separated', () {

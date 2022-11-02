@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "forswap")
-set(APPLICATION_ID "com.example.forswap")
+set(BINARY_NAME "mifiswap")
+set(APPLICATION_ID "com.mixin.mifiswap")
 
 cmake_policy(SET CMP0063 NEW)
 
