@@ -13,4 +13,4 @@ const fennecPrivateKey = '';
 const fennecSessionId = '';
 
 const mifiswapClientId = 'ceec3083-a058-47b0-8f77-b9582d244688';
-const mifiswapOauthUrl = 'https://mifiswap.org';
+const mifiswapOauthUrl = 'https://api.mifiswap.org';
