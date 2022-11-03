@@ -1,6 +1,6 @@
 # MifiSwap-native-app
 
-> MifiSwap native application of flutter : [HomePage](https://flutter.dev/)
+> MifiSwap native application of flutter : [HomePage](https://www.mifiswap.org/)
 
 MifiSwap for Android, IOS, powered by [Flutter](https://flutter.dev/), the Dart SDK from another repo [mifi_swap dart](https://github.com/bubiji/mifi_swap_dart_sdk).
 
@@ -45,7 +45,7 @@ For detailed explanation on how things work, checkout [flutter docs](https://doc
 
 - <https://pando.im/>  
 - [pando-4swap-doc](https://docs.pando.im/developer/intro)  
-- [4swap-Web-vue)](https://github.com/fox-one/4swap-web)  
+- [4swap-Web-vue](https://github.com/fox-one/4swap-web)  
 - [SDK golang](https://github.com/fox-one/4swap-sdk-go) 
 - [4Swap Webside](https://app.4swap.org/#/pool)  
 - [flutter dart package](https://pub.dev/publishers/mixin.dev/packages)  
