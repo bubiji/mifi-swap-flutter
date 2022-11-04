@@ -165,10 +165,6 @@ class Swap extends HookWidget {
             if (preOrder == null) {
               return;
             }
-            // print(preOrder?.ctx.routeIds);
-            // print(preOrder?.ctx.routeAssets);
-            // print(preOrder?.funds);
-            // print(preOrder?.amount);
             final amount = preOrder.amount;
             final funds = preOrder.funds;
             if (input == null) {
@@ -195,7 +191,6 @@ class Swap extends HookWidget {
               );
             }
 
-            print(preOrderMeta.value);
             // handleInputOutput(
             //     context, inputNotifier.value, outputNotifier.value);
           });
@@ -250,8 +245,6 @@ class Swap extends HookWidget {
       );
       final rsp = await context.appServices.fswap.createAction(
           action.toString(), inputController.text, inputAsset.asset.id);
-      print(rsp);
-      print('swap');
       if (useFennec) {
         final actionStr = rsp.data?.action ?? '';
         if (actionStr.isEmpty) {
@@ -265,7 +258,6 @@ class Swap extends HookWidget {
           iterator,
         );
         // final rsp = await context.appServices.bot.accountApi.verifyPin(encryptedPin);
-        // print(rsp.data);
         // final rsp = await context.appServices.bot.transferApi
         //     .pay(sdk.TransferRequest(
         // final rsp =
@@ -288,10 +280,6 @@ class Swap extends HookWidget {
           traceId: followId,
           memo: actionStr,
         ));
-        // print(rsp);
-        // print(rsp.data);
-        // print(rsp.data.status);
-        // print('swap');
       }
 
       if (useMixinMessager) {

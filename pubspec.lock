@@ -982,9 +982,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: a4148727226ed3bb5c5b3a623d029885fd975c70
-      resolved-ref: a4148727226ed3bb5c5b3a623d029885fd975c70
-      url: "git@github.com:bubiji/4swap_sdk_dart"
+      ref: d73dfc70991b3bcc0243c9263d5d355a5efe383c
+      resolved-ref: d73dfc70991b3bcc0243c9263d5d355a5efe383c
+      url: "https://github.com/bubiji/mifi_swap_dart_sdk.git"
     source: git
     version: "0.1.0"
   universal_io:
