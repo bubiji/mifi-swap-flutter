@@ -1,0 +1,6 @@
+host: :8090
+app_host: https://api.mixin.one
+app_id: 'you app id'
+app_secret: 'you app secret'
+app_session_id: 'you session id'
+app_private_key: 'you private key'

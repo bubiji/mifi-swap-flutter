@@ -7,6 +7,9 @@
 class R {
   const R._();
 
+  /// {@macro assets_generator.resourcesAlertSvg.preview}
+  static const String resourcesAlertSvg = 'resources/alert.svg';
+
   /// {@macro assets_generator.resourcesAllTransactionsSvg.preview}
   static const String resourcesAllTransactionsSvg =
       'resources/all_transactions.svg';
@@ -26,6 +29,10 @@ class R {
   static const String resourcesAmplitudeNoneSvg =
       'resources/amplitude_none.svg';
 
+  /// {@macro assets_generator.resourcesArrowUpCircleSvg.preview}
+  static const String resourcesArrowUpCircleSvg =
+      'resources/arrow-up-circle.svg';
+
   /// {@macro assets_generator.resourcesAuthBgWebp.preview}
   static const String resourcesAuthBgWebp = 'resources/auth_bg.webp';
 
@@ -41,6 +48,10 @@ class R {
   /// {@macro assets_generator.resourcesDeleteArrowSvg.preview}
   static const String resourcesDeleteArrowSvg = 'resources/delete_arrow.svg';
 
+  /// {@macro assets_generator.resourcesDirectionDownCircleSvg.preview}
+  static const String resourcesDirectionDownCircleSvg =
+      'resources/direction-down-circle.svg';
+
   /// {@macro assets_generator.resourcesDownSvg.preview}
   static const String resourcesDownSvg = 'resources/down.svg';
 
@@ -54,6 +65,13 @@ class R {
   /// {@macro assets_generator.resourcesFennecLogoPng.preview}
   static const String resourcesFennecLogoPng = 'resources/fennec-logo.png';
 
+  /// {@macro assets_generator.resourcesFilterSvg.preview}
+  static const String resourcesFilterSvg = 'resources/filter.svg';
+
+  /// {@macro assets_generator.resourcesHamburgerMenuSvg.preview}
+  static const String resourcesHamburgerMenuSvg =
+      'resources/hamburger_menu.svg';
+
   /// {@macro assets_generator.resourcesHiddenSvg.preview}
   static const String resourcesHiddenSvg = 'resources/hidden.svg';
 
@@ -63,16 +81,150 @@ class R {
   /// {@macro assets_generator.resourcesHomeSvg.preview}
   static const String resourcesHomeSvg = 'resources/home.svg';
 
+  /// {@macro assets_generator.resourcesIcAddressSvg.preview}
+  static const String resourcesIcAddressSvg = 'resources/ic_address.svg';
+
+  /// {@macro assets_generator.resourcesIcApplePaySvg.preview}
+  static const String resourcesIcApplePaySvg = 'resources/ic_apple_pay.svg';
+
+  /// {@macro assets_generator.resourcesIcArrowDownSvg.preview}
+  static const String resourcesIcArrowDownSvg = 'resources/ic_arrow_down.svg';
+
   /// {@macro assets_generator.resourcesIcBackSvg.preview}
   static const String resourcesIcBackSvg = 'resources/ic_back.svg';
+
+  /// {@macro assets_generator.resourcesIcCheckSvg.preview}
+  static const String resourcesIcCheckSvg = 'resources/ic_check.svg';
 
   /// {@macro assets_generator.resourcesIcCircleCloseSvg.preview}
   static const String resourcesIcCircleCloseSvg =
       'resources/ic_circle_close.svg';
 
+  /// {@macro assets_generator.resourcesIcCopySvg.preview}
+  static const String resourcesIcCopySvg = 'resources/ic_copy.svg';
+
+  /// {@macro assets_generator.resourcesIcDoubleArrowSvg.preview}
+  static const String resourcesIcDoubleArrowSvg =
+      'resources/ic_double_arrow.svg';
+
+  /// {@macro assets_generator.resourcesIcFileSvg.preview}
+  static const String resourcesIcFileSvg = 'resources/ic_file.svg';
+
+  /// {@macro assets_generator.resourcesIcFlagArsPng.preview}
+  static const String resourcesIcFlagArsPng = 'resources/ic_flag_ars.png';
+
+  /// {@macro assets_generator.resourcesIcFlagAudPng.preview}
+  static const String resourcesIcFlagAudPng = 'resources/ic_flag_aud.png';
+
+  /// {@macro assets_generator.resourcesIcFlagBrlPng.preview}
+  static const String resourcesIcFlagBrlPng = 'resources/ic_flag_brl.png';
+
+  /// {@macro assets_generator.resourcesIcFlagCadPng.preview}
+  static const String resourcesIcFlagCadPng = 'resources/ic_flag_cad.png';
+
+  /// {@macro assets_generator.resourcesIcFlagChfPng.preview}
+  static const String resourcesIcFlagChfPng = 'resources/ic_flag_chf.png';
+
+  /// {@macro assets_generator.resourcesIcFlagClpPng.preview}
+  static const String resourcesIcFlagClpPng = 'resources/ic_flag_clp.png';
+
+  /// {@macro assets_generator.resourcesIcFlagCopPng.preview}
+  static const String resourcesIcFlagCopPng = 'resources/ic_flag_cop.png';
+
+  /// {@macro assets_generator.resourcesIcFlagCzkPng.preview}
+  static const String resourcesIcFlagCzkPng = 'resources/ic_flag_czk.png';
+
+  /// {@macro assets_generator.resourcesIcFlagDkkPng.preview}
+  static const String resourcesIcFlagDkkPng = 'resources/ic_flag_dkk.png';
+
+  /// {@macro assets_generator.resourcesIcFlagEurPng.preview}
+  static const String resourcesIcFlagEurPng = 'resources/ic_flag_eur.png';
+
+  /// {@macro assets_generator.resourcesIcFlagGbpPng.preview}
+  static const String resourcesIcFlagGbpPng = 'resources/ic_flag_gbp.png';
+
+  /// {@macro assets_generator.resourcesIcFlagHkdPng.preview}
+  static const String resourcesIcFlagHkdPng = 'resources/ic_flag_hkd.png';
+
+  /// {@macro assets_generator.resourcesIcFlagIlsPng.preview}
+  static const String resourcesIcFlagIlsPng = 'resources/ic_flag_ils.png';
+
+  /// {@macro assets_generator.resourcesIcFlagInrPng.preview}
+  static const String resourcesIcFlagInrPng = 'resources/ic_flag_inr.png';
+
+  /// {@macro assets_generator.resourcesIcFlagIskPng.preview}
+  static const String resourcesIcFlagIskPng = 'resources/ic_flag_isk.png';
+
+  /// {@macro assets_generator.resourcesIcFlagJpyPng.preview}
+  static const String resourcesIcFlagJpyPng = 'resources/ic_flag_jpy.png';
+
+  /// {@macro assets_generator.resourcesIcFlagKrwPng.preview}
+  static const String resourcesIcFlagKrwPng = 'resources/ic_flag_krw.png';
+
+  /// {@macro assets_generator.resourcesIcFlagMxnPng.preview}
+  static const String resourcesIcFlagMxnPng = 'resources/ic_flag_mxn.png';
+
+  /// {@macro assets_generator.resourcesIcFlagMyrPng.preview}
+  static const String resourcesIcFlagMyrPng = 'resources/ic_flag_myr.png';
+
+  /// {@macro assets_generator.resourcesIcFlagNokPng.preview}
+  static const String resourcesIcFlagNokPng = 'resources/ic_flag_nok.png';
+
+  /// {@macro assets_generator.resourcesIcFlagNzdPng.preview}
+  static const String resourcesIcFlagNzdPng = 'resources/ic_flag_nzd.png';
+
+  /// {@macro assets_generator.resourcesIcFlagPhpPng.preview}
+  static const String resourcesIcFlagPhpPng = 'resources/ic_flag_php.png';
+
+  /// {@macro assets_generator.resourcesIcFlagPlnPng.preview}
+  static const String resourcesIcFlagPlnPng = 'resources/ic_flag_pln.png';
+
+  /// {@macro assets_generator.resourcesIcFlagSekPng.preview}
+  static const String resourcesIcFlagSekPng = 'resources/ic_flag_sek.png';
+
+  /// {@macro assets_generator.resourcesIcFlagSgdPng.preview}
+  static const String resourcesIcFlagSgdPng = 'resources/ic_flag_sgd.png';
+
+  /// {@macro assets_generator.resourcesIcFlagThbPng.preview}
+  static const String resourcesIcFlagThbPng = 'resources/ic_flag_thb.png';
+
+  /// {@macro assets_generator.resourcesIcFlagUsdPng.preview}
+  static const String resourcesIcFlagUsdPng = 'resources/ic_flag_usd.png';
+
+  /// {@macro assets_generator.resourcesIcFlagVndPng.preview}
+  static const String resourcesIcFlagVndPng = 'resources/ic_flag_vnd.png';
+
+  /// {@macro assets_generator.resourcesIcFlagZarPng.preview}
+  static const String resourcesIcFlagZarPng = 'resources/ic_flag_zar.png';
+
+  /// {@macro assets_generator.resourcesIcQuestionSvg.preview}
+  static const String resourcesIcQuestionSvg = 'resources/ic_question.svg';
+
+  /// {@macro assets_generator.resourcesIcSaveAlbumSvg.preview}
+  static const String resourcesIcSaveAlbumSvg = 'resources/ic_save_album.svg';
+
+  /// {@macro assets_generator.resourcesIcScanSvg.preview}
+  static const String resourcesIcScanSvg = 'resources/ic_scan.svg';
+
+  /// {@macro assets_generator.resourcesIcSearchSvg.preview}
+  static const String resourcesIcSearchSvg = 'resources/ic_search.svg';
+
   /// {@macro assets_generator.resourcesIcSearchSmallSvg.preview}
   static const String resourcesIcSearchSmallSvg =
       'resources/ic_search_small.svg';
+
+  /// {@macro assets_generator.resourcesIcSetSvg.preview}
+  static const String resourcesIcSetSvg = 'resources/ic_set.svg';
+
+  /// {@macro assets_generator.resourcesIcSwitchSvg.preview}
+  static const String resourcesIcSwitchSvg = 'resources/ic_switch.svg';
+
+  /// {@macro assets_generator.resourcesIcSwitchSmallSvg.preview}
+  static const String resourcesIcSwitchSmallSvg =
+      'resources/ic_switch_small.svg';
+
+  /// {@macro assets_generator.resourcesIcWarningSvg.preview}
+  static const String resourcesIcWarningSvg = 'resources/ic_warning.svg';
 
   /// {@macro assets_generator.resourcesLoaddingSvg.preview}
   static const String resourcesLoaddingSvg = 'resources/loadding.svg';
@@ -83,20 +235,73 @@ class R {
   /// {@macro assets_generator.resourcesMeSvg.preview}
   static const String resourcesMeSvg = 'resources/me.svg';
 
+  /// {@macro assets_generator.resourcesMixinLogo1Png.preview}
+  static const String resourcesMixinLogo1Png = 'resources/mixin-logo-1.png';
+
   /// {@macro assets_generator.resourcesMixinLogoPng.preview}
   static const String resourcesMixinLogoPng = 'resources/mixin-logo.png';
+
+  /// {@macro assets_generator.resourcesPlusSvg.preview}
+  static const String resourcesPlusSvg = 'resources/plus.svg';
+
+  /// {@macro assets_generator.resourcesProblemSvg.preview}
+  static const String resourcesProblemSvg = 'resources/problem.svg';
+
+  /// {@macro assets_generator.resourcesReceiveSvg.preview}
+  static const String resourcesReceiveSvg = 'resources/receive.svg';
 
   /// {@macro assets_generator.resourcesRightSvg.preview}
   static const String resourcesRightSvg = 'resources/right.svg';
 
+  /// {@macro assets_generator.resourcesScanningSvg.preview}
+  static const String resourcesScanningSvg = 'resources/scanning.svg';
+
+  /// {@macro assets_generator.resourcesSendSvg.preview}
+  static const String resourcesSendSvg = 'resources/send.svg';
+
   /// {@macro assets_generator.resourcesSettingSvg.preview}
   static const String resourcesSettingSvg = 'resources/setting.svg';
+
+  /// {@macro assets_generator.resourcesSpinSvg.preview}
+  static const String resourcesSpinSvg = 'resources/spin.svg';
 
   /// {@macro assets_generator.resourcesSwapSvg.preview}
   static const String resourcesSwapSvg = 'resources/swap.svg';
 
   /// {@macro assets_generator.resourcesSwapacrossSvg.preview}
   static const String resourcesSwapacrossSvg = 'resources/swapacross.svg';
+
+  /// {@macro assets_generator.resourcesToastErrorSvg.preview}
+  static const String resourcesToastErrorSvg = 'resources/toast_error.svg';
+
+  /// {@macro assets_generator.resourcesToastSucceedSvg.preview}
+  static const String resourcesToastSucceedSvg = 'resources/toast_succeed.svg';
+
+  /// {@macro assets_generator.resourcesToastWarningSvg.preview}
+  static const String resourcesToastWarningSvg = 'resources/toast_warning.svg';
+
+  /// {@macro assets_generator.resourcesTransactionSvg.preview}
+  static const String resourcesTransactionSvg = 'resources/transaction.svg';
+
+  /// {@macro assets_generator.resourcesTransactionDepositSvg.preview}
+  static const String resourcesTransactionDepositSvg =
+      'resources/transaction_deposit.svg';
+
+  /// {@macro assets_generator.resourcesTransactionNetSvg.preview}
+  static const String resourcesTransactionNetSvg =
+      'resources/transaction_net.svg';
+
+  /// {@macro assets_generator.resourcesTransactionPendingSvg.preview}
+  static const String resourcesTransactionPendingSvg =
+      'resources/transaction_pending.svg';
+
+  /// {@macro assets_generator.resourcesTransactionWithdrawalSvg.preview}
+  static const String resourcesTransactionWithdrawalSvg =
+      'resources/transaction_withdrawal.svg';
+
+  /// {@macro assets_generator.resourcesUnauthorizedContactSvg.preview}
+  static const String resourcesUnauthorizedContactSvg =
+      'resources/unauthorized_contact.svg';
 
   /// {@macro assets_generator.resourcesUnnamedPng.preview}
   static const String resourcesUnnamedPng = 'resources/unnamed.png';
@@ -106,4 +311,7 @@ class R {
 
   /// {@macro assets_generator.resourcesUprightSvg.preview}
   static const String resourcesUprightSvg = 'resources/upright.svg';
+
+  /// {@macro assets_generator.resourcesWalletSvg.preview}
+  static const String resourcesWalletSvg = 'resources/wallet.svg';
 }

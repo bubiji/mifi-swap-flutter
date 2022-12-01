@@ -1,4 +1,4 @@
-CREATE TABLE pairs(
+CREATE TABLE swap_pairs(
   base_amount         TEXT NOT NULL,
   base_asset_id       TEXT NOT NULL,
   base_value          TEXT NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE pairs(
   PRIMARY KEY(base_asset_id, quote_asset_id)
 );
 
-CREATE TABLE assets(
+CREATE TABLE swap_assets(
   id           TEXT NOT NULL,
   logo         TEXT NOT NULL,
   name         TEXT NOT NULL,

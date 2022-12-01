@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../db/mixin_database.dart';
 import '../../util/extension/extension.dart';
 import '../../util/hook.dart';
-import '../../util/pair.dart';
+import '../../util/swap_pair.dart';
 import '../widget/buttons.dart';
 import '../widget/mixin_appbar.dart';
 
@@ -13,19 +13,19 @@ class Overview extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pairResults = useMemoizedStream(
-      () => context.appServices.mixinDatabase.pairDao.getAll().watch(),
-      initialData: <Pair>[],
+    final swapPairResults = useMemoizedStream(
+      () => context.appServices.mixinDatabase.swapPairDao.getAll().watch(),
+      initialData: <SwapPair>[],
     ).requireData;
 
     final overview = useMemoized(() {
-      final overview = PairOverview();
-      pairResults.forEach(overview.plus);
+      final overview = SwapPairOverview();
+      swapPairResults.forEach(overview.plus);
       return overview;
-    }, [pairResults]);
+    }, [swapPairResults]);
     return Scaffold(
       appBar: MixinAppBar(
-        leading: const MixinBackButton2(),
+        leading: const MixinBackHomeButton(),
         title: SelectableText(
           context.l10n.overview,
           style: TextStyle(

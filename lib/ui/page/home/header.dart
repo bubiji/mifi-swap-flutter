@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../util/extension/extension.dart';
-import '../../../util/pair.dart';
 import '../../../util/r.dart';
+import '../../../util/swap_pair.dart';
 import '../../router/mixin_routes.dart';
 
 class Header extends HookWidget {
@@ -13,7 +13,7 @@ class Header extends HookWidget {
     required this.overview,
   }) : super(key: key);
 
-  final PairOverview overview;
+  final SwapPairOverview overview;
 
   @override
   Widget build(BuildContext context) => Padding(

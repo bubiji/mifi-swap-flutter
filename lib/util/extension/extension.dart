@@ -10,10 +10,10 @@ import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart' show VRouterContext;
 
 import '../../db/mixin_database.dart';
+import '../../mixin_wallet/util/constants.dart';
 import '../../service/app_services.dart';
 import '../../service/profile/profile_manager.dart';
-// import '../constants.dart';
-// import '../l10n.dart';
+import '../l10n.dart';
 
 export 'package:collection/collection.dart';
 export 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart'

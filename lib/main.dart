@@ -76,47 +76,48 @@ class _Router extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => VRouter(
-        key: vRouterStateKey,
-        title: '4sawp',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          L10n.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          ...L10n.delegate.supportedLocales,
-        ],
-        theme: ThemeData(
-          pageTransitionsTheme: const PageTransitionsTheme(
-            builders: <TargetPlatform, PageTransitionsBuilder>{
-              TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-              TargetPlatform.iOS: _NoAnimationPageTransitionsBuilder(),
-              TargetPlatform.android: _NoAnimationPageTransitionsBuilder(),
-            },
-          ),
-          fontFamily: getFallbackFontFamily(),
+      key: vRouterStateKey,
+      title: '4sawp',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        L10n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        ...L10n.delegate.supportedLocales,
+      ],
+      theme: ThemeData(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: _NoAnimationPageTransitionsBuilder(),
+            TargetPlatform.android: _NoAnimationPageTransitionsBuilder(),
+          },
         ),
-        builder: (BuildContext context, Widget child) => DefaultTextStyle(
-          style: TextStyle(
-            height: 1,
-            // Add underline decoration for Safari.
-            // https://github.com/flutter/flutter/issues/90705#issuecomment-927944039
-            // because Chinese/Japanese characters can not render in latest safari(iOS15).
-            decoration: defaultTargetPlatform == TargetPlatform.iOS ||
-                    defaultTargetPlatform == TargetPlatform.macOS
-                ? TextDecoration.underline
-                : null,
+        fontFamily: getFallbackFontFamily(),
+      ),
+      builder: (BuildContext context, Widget child) => DefaultTextStyle(
+            style: TextStyle(
+              height: 1,
+              // Add underline decoration for Safari.
+              // https://github.com/flutter/flutter/issues/90705#issuecomment-927944039
+              // because Chinese/Japanese characters can not render in latest safari(iOS15).
+              decoration: defaultTargetPlatform == TargetPlatform.iOS ||
+                      defaultTargetPlatform == TargetPlatform.macOS
+                  ? TextDecoration.underline
+                  : null,
+            ),
+            child: BrightnessObserver(
+              lightThemeData: lightBrightnessThemeData,
+              child: child,
+            ),
           ),
-          child: BrightnessObserver(
-            lightThemeData: lightBrightnessThemeData,
-            child: child,
-          ),
-        ),
-        routes: buildMixinRoutes(context),
+      routes:
+          buildMixinRoutes(context) //+ mixin_wallet.buildMixinRoutes(context),
       );
 }
 

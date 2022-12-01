@@ -12,6 +12,10 @@ targets:
           sqlite_modules:
             - fts5
             - moor_ffi
+        generate_for:
+          include:
+          - lib/db/**
+          - lib/mixin_wallet/db/**
       json_serializable:
         options:
           explicit_to_json: true

@@ -31,8 +31,8 @@ class MixinBackButton extends StatelessWidget {
       );
 }
 
-class MixinBackButton2 extends StatelessWidget {
-  const MixinBackButton2({Key? key, this.onTap}) : super(key: key);
+class MixinBackHomeButton extends StatelessWidget {
+  const MixinBackHomeButton({Key? key, this.onTap}) : super(key: key);
   final VoidCallback? onTap;
 
   @override

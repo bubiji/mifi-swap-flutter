@@ -33,28 +33,23 @@ class Avatar extends StatelessWidget {
       name: name,
     );
 
+    final avatarUrl = this.avatarUrl ?? '';
+
     return ClipOval(
       child: ColoredBox(
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(borderWidth),
           child: ClipOval(
-            child: CachedNetworkImage(
-              placeholder: (context, url) => placeholder,
-              imageUrl: avatarUrl ?? '',
-              width: size,
-              height: size,
-              fit: BoxFit.cover,
-              // loadingBuilder: (
-              //   BuildContext context,
-              //   Widget child,
-              //   ImageChunkEvent? loadingProgress,
-              // ) {
-              //   if (loadingProgress == null) return child;
-              //   return placeholder;
-              // },
-              // errorBuilder: (_, __, ___) => placeholder,
-            ),
+            child: avatarUrl.isEmpty
+                ? placeholder
+                : CachedNetworkImage(
+                    placeholder: (context, url) => placeholder,
+                    imageUrl: avatarUrl,
+                    width: size,
+                    height: size,
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
       ),

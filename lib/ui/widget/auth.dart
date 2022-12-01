@@ -5,42 +5,42 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../service/profile/profile_manager.dart';
+// import '../../service/profile/profile_manager.dart';
 import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 
 class Auth extends HookWidget {
-  const Auth({Key? key}) : super(key: key);
+  const Auth({Key? key, this.bind = false}) : super(key: key);
+
+  final bool bind;
 
   @override
   Widget build(BuildContext context) {
     final loading = useState(false);
     final codeUrl = useState('');
 
-    useMemoizedFuture(() async {
-      var launched = false;
-      context.appServices.connect((url, oauthCode) {
+    useEffect(() {
+      var running = true;
+      final scope = bind ? 'PROFILE:READ' : 'PROFILE:READ ASSETS:READ';
+      context.appServices.connect(scope, (url, oauthCode) {
+        if (!running) {
+          return true;
+        }
         codeUrl.value = url ?? '';
         if (oauthCode?.isEmpty ?? true) {
-          if (!launched && url != null) {
-            scheduleMicrotask(() async {
-              launched = true;
-              final parsedUrl = Uri.parse(url);
-              if (!await launchUrl(parsedUrl)) {
-                launched = false;
-              }
-            });
-          }
           return false;
         }
         loading.value = true;
         scheduleMicrotask(() async {
           try {
-            await context.appServices.login(oauthCode ?? '');
+            if (bind) {
+              await context.appServices.bindMixinUser(oauthCode ?? '');
+              // } else {
+              // await context.appServices.login(oauthCode ?? '');
+              // isAuthChange.value = !isAuthChange.value;
+            }
             Navigator.pop(context);
-            isAuthChange.value = !isAuthChange.value;
           } catch (error, s) {
             e('$error, $s');
             loading.value = false;
@@ -48,15 +48,23 @@ class Auth extends HookWidget {
         });
         return true;
       });
-    });
+      return () {
+        running = false;
+      };
+    }, []);
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
-      child: Center(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          child:
-              loading.value ? _ProgressBody() : _AuthBody(url: codeUrl.value),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mixin Binding'),
+      ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height - 300,
+        child: Center(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child:
+                loading.value ? _ProgressBody() : _AuthBody(url: codeUrl.value),
+          ),
         ),
       ),
     );
@@ -115,8 +123,28 @@ class _AuthBody extends StatelessWidget {
                     ),
                   )
                 else
-                  Container(),
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
               ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final parsedUrl = Uri.parse(url);
+              launchUrl(parsedUrl);
+            },
+            child: const Text(
+              'Open Mixin',
+            ),
+          ),
+          const SizedBox(height: 15),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancel',
             ),
           ),
         ],

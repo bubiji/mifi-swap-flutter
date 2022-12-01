@@ -16,7 +16,7 @@ extension CurrencyExtension on dynamic {
 extension StringCurrencyExtension on String {
   bool get isZero => (double.tryParse(this) ?? 0.0) == 0;
 
-  Decimal get asDecimal => Decimal.parse(this);
+  Decimal get asDecimal => Decimal.tryParse(this) ?? Decimal.zero;
 
   String numberFormat() {
     if (isEmpty) return this;
@@ -117,5 +117,59 @@ extension PriceFormat on Decimal {
   String get toPercentage {
     final fait = this * Decimal.parse('100');
     return '${fait.toStringAsFixed(2)}%';
+  }
+}
+
+extension AssetResultExtension on AssetResult {
+  Decimal get amountOfUsd => balance.asDecimal * priceUsd.asDecimal;
+
+  Decimal get amountOfBtc => balance.asDecimal * priceBtc.asDecimal;
+
+  Decimal get amountOfCurrentCurrency =>
+      balance.asDecimal * priceUsd.asDecimal * fiatRate.asDecimal;
+
+  Decimal get usdUnitPrice => priceUsd.asDecimal * fiatRate.asDecimal;
+
+  bool get needShowMemo => tag?.isNotEmpty ?? false;
+
+  bool get needShowReserve => (int.tryParse(reserve ?? '0') ?? 0) > 0;
+
+  List<String> getTip(BuildContext context) {
+    switch (assetId) {
+      case bitcoin:
+        return [context.l10n.depositTipBtc];
+      case ethereum:
+        return [context.l10n.depositTipEth];
+      case eos:
+        return [context.l10n.depositTipEos];
+      case tron:
+        return [
+          context.l10n.depositTipTron,
+          context.l10n.depositTipNotSupportContract,
+        ];
+      default:
+        return [context.l10n.depositTip(symbol)];
+    }
+  }
+}
+
+extension SnapshotItemExtension on SnapshotItem {
+  Decimal amountOfCurrentCurrency(AssetResult asset) {
+    assert(asset.assetId == assetId);
+    return amount.asDecimal *
+        asset.priceUsd.asDecimal *
+        asset.fiatRate.asDecimal;
+  }
+
+  bool get isPositive => (double.tryParse(amount) ?? 0) > 0;
+}
+
+extension AddressExtension on Addresse {
+  String displayAddress() {
+    if (tag == null || (tag?.isEmpty ?? false)) {
+      return '$destination$tag';
+    } else {
+      return destination;
+    }
   }
 }

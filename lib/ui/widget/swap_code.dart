@@ -5,10 +5,56 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../util/extension/extension.dart';
-import '../../util/hook.dart';
 import '../../util/logger.dart';
 import '../../util/r.dart';
 import '../widget/symbol.dart';
+
+Future<void> showSwapSuccess(BuildContext context) async {
+  await showDialog<void>(
+    context: context,
+    builder: (context) {
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop(true);
+      });
+      return AlertDialog(
+        title: Text(
+          context.l10n.success,
+          textAlign: TextAlign.center,
+        ),
+        titlePadding: const EdgeInsets.all(20),
+        titleTextStyle: const TextStyle(color: Colors.black87, fontSize: 16),
+        content: Text(context.l10n.swapSuccessfully),
+        contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20.0),
+        contentTextStyle: const TextStyle(color: Colors.black54, fontSize: 14),
+      );
+    },
+  );
+}
+
+Future<void> checkSwapResult(BuildContext context, String followId) async {
+  const timeout = Duration(seconds: 1);
+  final done = Completer<void>();
+
+  var count = 0;
+
+  final timer = Timer.periodic(timeout, (timer) async {
+    count += 1;
+    if (count > 5) {
+      done.complete();
+    }
+    //1s 回调一次
+    try {
+      final rsp = await context.appServices.fswap.readOrderDetail(followId);
+      i('$rsp');
+      done.complete();
+    } catch (error, s) {
+      e('$error, $s');
+    }
+  });
+  await done.future;
+  timer.cancel();
+  await showSwapSuccess(context);
+}
 
 class SwapCode extends HookWidget {
   const SwapCode(
@@ -28,50 +74,15 @@ class SwapCode extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useMemoizedFuture(() => context.appServices.updatePairs());
     final loading = useState(false);
-
-    Future<void> showSuccess() async {
-      await showDialog<void>(
-        context: context,
-        builder: (context) {
-          Future.delayed(const Duration(seconds: 2), () {
-            Navigator.of(context).pop(true);
-          });
-          return AlertDialog(
-            title: Text(
-              context.l10n.success,
-              textAlign: TextAlign.center,
-            ),
-            titlePadding: const EdgeInsets.all(20),
-            titleTextStyle:
-                const TextStyle(color: Colors.black87, fontSize: 16),
-            content: Text(context.l10n.swapSuccessfully),
-            contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20.0),
-            contentTextStyle:
-                const TextStyle(color: Colors.black54, fontSize: 14),
-          );
-        },
-      );
-    }
 
     Future<void> handleSwap() async {
       if (loading.value) {
         return;
       }
       loading.value = true;
-      const timeout = Duration(seconds: 1);
-      Timer.periodic(timeout, (timer) async {
-        //1s 回调一次
-        try {
-          await context.appServices.fswap.readOrderDetail(followId);
-          timer.cancel(); // 取消定时器
-          Navigator.pop(context);
-          await showSuccess();
-        } catch (error, s) {
-          e('$error, $s');
-        }
-      });
+      await checkSwapResult(context, followId);
+      Navigator.pop(context);
     }
 
     return SizedBox(
