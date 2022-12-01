@@ -6,8 +6,10 @@ import 'package:vrouter/vrouter.dart';
 import '../../mixin_wallet/ui/router/mixin_routes.dart' as mixin_wallet;
 import '../../util/extension/extension.dart';
 import '../../util/r.dart';
+// import '../page/home.dart';
 import '../page/not_found.dart';
 import '../page/overview.dart';
+import '../page/search_add.dart';
 import '../page/swap.dart';
 import '../page/swap_asset_detail.dart';
 import '../page/wallet.dart';
@@ -17,6 +19,7 @@ final notFoundUri = Uri(path: '/404');
 const swapAssetDetailPath = '/swapAsset/detail/:id';
 const swapPath = '/swap';
 const overviewPath = '/overview';
+final searchUri = Uri(path: '/search');
 final meUri = Uri(path: '/me');
 
 List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
@@ -66,12 +69,18 @@ List<VRouteElementBuilder> buildMixinRoutes(BuildContext context) => [
                     path: overviewPath,
                     widget: const Overview(),
                   ),
+                  VWidget(
+                    key: const ValueKey('Search'),
+                    path: searchUri.toString(),
+                    widget: const Search_Add(),
+                  ),
                 ],
               ),
             ],
           ),
         ],
       ),
+      // VRouteRedirector(path: ':_(.+)', redirectTo: '/404'),
       VRouteRedirector(path: ':_(.+)', redirectTo: '/404-1'),
     ];
 

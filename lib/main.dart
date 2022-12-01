@@ -7,9 +7,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
+// import 'mixin_wallet/ui/router/mixin_routes.dart' as mixin_wallet;
 import 'service/app_services.dart';
 import 'service/profile/profile_manager.dart';
 import 'ui/brightness_theme_data.dart';
+import 'ui/models/m_swap_assetmeta_CartModel.dart';
 import 'ui/router/mixin_routes.dart';
 import 'ui/widget/brightness_observer.dart';
 import 'util/l10n.dart';
@@ -56,6 +58,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
+          Provider(create: (context) => SwapAssetListModel()),
+          ChangeNotifierProxyProvider<SwapAssetListModel,
+              MySwapAsset_CartModel>(
+            create: (context) => MySwapAsset_CartModel(),
+            update: (context, catalog, cart) {
+              if (cart == null) throw ArgumentError.notNull('cart');
+              cart.catalog = catalog;
+              return cart;
+            },
+          ),
           ChangeNotifierProvider(
             create: (BuildContext context) => AppServices(
               vRouterStateKey: vRouterStateKey,

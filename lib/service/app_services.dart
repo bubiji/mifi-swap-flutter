@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
+import 'package:convert/convert.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mixin_bot_sdk_dart/mixin_bot_sdk_dart.dart' as sdk;
+import 'package:pointycastle/digests/sha3.dart';
 import 'package:uniswap_sdk_dart/uniswap_sdk_dart.dart' as mifiswap;
 import 'package:vrouter/vrouter.dart';
 
@@ -137,7 +140,7 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       userId: keystore.clientId,
       sessionId: keystore.sessionId,
       privateKey: keystore.privateKey,
-      // scp: authScope,
+      scp: authScope,
       interceptors: interceptors,
     );
 
@@ -231,6 +234,12 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       updateSwapPairs(),
     ]);
   }
+
+  // Future<mifiswap.Asset> updateSwapAsset(String id) async {
+  //   final swapAsset = (await fswap.readSwapAsset(id)).data;
+  //   await mixinDatabase.swapAssetDao.insert(swapAsset);
+  //   return swapAsset;
+  // }
 
   Future<KeyStore?> createKeyStore(String fullName) async {
     final keyPair = ed.generateKey();
@@ -355,6 +364,36 @@ class AppServices extends ChangeNotifier with EquatableMixin {
       traceId: traceId,
       memo: memo,
     ));
+  }
+
+  Future<List<sdk.Asset>> getAssetList({KeyStore? keystore}) async {
+    final bot0 = getClient(keystore: keystore);
+    final rsp = await bot0.assetApi.getAssets();
+    final assets = rsp.data;
+    final myAssetIdList = [...dbMyAssetIdList];
+
+    for (final asset in assets) {
+      myAssetIdList.remove(asset.assetId);
+    }
+
+    for (final assetId in myAssetIdList) {
+      final rsp = await bot.assetApi.getAssetById(assetId);
+      assets.add(rsp.data);
+    }
+
+    //.where((swapAsset) => true )// swapAsset.balance.asDecimal > Decimal.zero)
+    //.toList();
+
+    return assets;
+  }
+
+  Future<Map<String, String>> getBalance({KeyStore? keystore}) async {
+    final assets = await getAssetList(keystore: keystore);
+    final retval = <String, String>{};
+    assets.forEach((v) {
+      retval[v.assetId] = v.balance;
+    });
+    return retval;
   }
 
   sdk.Client getClient({KeyStore? keystore}) {
@@ -763,6 +802,136 @@ class AppServices extends ChangeNotifier with EquatableMixin {
         .assetResult(auth!.account.fiatCurrency, assetId)
         .getSingleOrNull();
   }
+
+  Future<List<sdk.CollectibleOutput>> _loadUnspentTransactionOutputs({
+    String? offset,
+  }) async {
+    // hash member id.
+    final members = auth!.account.userId;
+
+    String hashMemberId(String member) {
+      try {
+        final bytes =
+            SHA3Digest(256).process(Uint8List.fromList(utf8.encode(member)));
+        return hex.encode(bytes);
+      } catch (e, s) {
+        d('updateCollectibles error: $e, $s');
+        return '';
+      }
+    }
+
+    const threshold = 1;
+    const limit = 500;
+
+    final response = await client.collectibleApi.getOutputs(
+      members: hashMemberId(members),
+      limit: limit,
+      threshold: threshold,
+      offset: offset,
+    );
+
+    final outputs = <sdk.CollectibleOutput>[];
+    for (final output in response.data) {
+      final receivers = List<String>.from(output.receivers)..sort();
+      if (receivers.join() != members) {
+        d('receivers not match: outputId ${output.outputId}');
+        continue;
+      }
+      if (output.receiversThreshold != threshold) {
+        d('threshold not match: ${output.outputId}');
+        continue;
+      }
+      if (output.state == sdk.CollectibleOutput.kStateSpent) {
+        d('state not match: ${output.outputId}');
+        continue;
+      }
+      outputs.add(output);
+    }
+
+    if (response.data.length == limit) {
+      outputs.addAll(await _loadUnspentTransactionOutputs(
+        offset: response.data.last.createdAt,
+      ));
+    }
+    return outputs;
+  }
+
+  Future<void> updateCollectibles() async {
+    try {
+      final utxos = await _loadUnspentTransactionOutputs();
+      final tokenIds = utxos.map((e) => e.tokenId).toList();
+      await mixinDatabase.collectibleDao.updateOutputs(utxos);
+      mixinDatabase.collectibleDao.removeNotExist(tokenIds);
+      await refreshCollectiblesTokenIfNotExist(tokenIds);
+    } on DioError catch (e, s) {
+      if (e.optionMixinError?.isForbidden ?? false) {
+        rethrow;
+      }
+      d('updateCollectibles error: $e, $s');
+    } catch (e, s) {
+      d('updateCollectibles error: $e, $s');
+    }
+  }
+
+  Future<void> refreshCollectiblesTokenIfNotExist(List<String> tokenIds) async {
+    final toRefresh =
+        await mixinDatabase.collectibleDao.filterExistsTokens(tokenIds);
+
+    final collectionIds = <String>{};
+    for (final tokenId in toRefresh) {
+      try {
+        final response = await client.collectibleApi.getToken(tokenId);
+        final token = response.data;
+        collectionIds.add(token.collectionId);
+        await mixinDatabase.collectibleDao.insertCollectible(token);
+      } catch (error, stacktrace) {
+        d('refreshTokenIfNotExist error:$tokenId $error $stacktrace');
+      }
+    }
+    await refreshCollection(collectionIds.toList(), force: false);
+  }
+
+  Future<void> refreshCollection(
+    List<String> collectionIds, {
+    bool force = false,
+  }) async {
+    final toRefresh = force
+        ? collectionIds
+        : await mixinDatabase.collectibleDao
+            .filterExistsCollections(collectionIds);
+    for (final collectionId in toRefresh) {
+      if (collectionId.isEmpty) {
+        // Ignore empty collectionId;
+        continue;
+      }
+      try {
+        final response = await client.collectibleApi.collections(collectionId);
+        final collection = response.data;
+        await mixinDatabase.collectibleDao.insertCollection(collection);
+      } catch (error, stacktrace) {
+        d('refreshCollection error:$collectionId $error $stacktrace');
+      }
+    }
+  }
+
+  Stream<List<MapEntry<String, List<CollectibleItem>>>> groupedCollectibles() =>
+      mixinDatabase.collectibleDao.getAllCollectibles().watch().map((event) {
+        final grouped = event.groupListsBy((e) => e.collectionId);
+        final result = <MapEntry<String, List<CollectibleItem>>>[];
+        grouped.forEach((key, value) {
+          if (key.isEmpty) {
+            for (final item in value) {
+              result.add(MapEntry(key, [item]));
+            }
+          } else {
+            result.add(MapEntry(key, value));
+          }
+        });
+        return result;
+      });
+
+  Stream<Collection?> collection(String collectionId) =>
+      mixinDatabase.collectibleDao.collection(collectionId).watchSingleOrNull();
 
   Future<int> getPinErrorRemainCount() async {
     const pinErrorMax = 5;

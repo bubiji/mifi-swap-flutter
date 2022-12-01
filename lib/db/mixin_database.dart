@@ -7,6 +7,7 @@ import '../mixin_wallet/db/converter/user_relationship_converter.dart';
 import '../mixin_wallet/db/dao/address_dao.dart';
 import '../mixin_wallet/db/dao/asset_dao.dart';
 import '../mixin_wallet/db/dao/assets_extra_dao.dart';
+import '../mixin_wallet/db/dao/collectible_dao.dart';
 import '../mixin_wallet/db/dao/fiat_dao.dart';
 import '../mixin_wallet/db/dao/snapshot_dao.dart';
 import '../mixin_wallet/db/dao/user_dao.dart';
@@ -24,6 +25,7 @@ part 'mixin_database.g.dart';
     '../mixin_wallet/db/moor/dao/asset.drift',
     '../mixin_wallet/db/moor/dao/snapshot.drift',
     '../mixin_wallet/db/moor/dao/user.drift',
+    '../mixin_wallet/db/moor/dao/collectible.drift'
   },
   daos: [
     SwapPairDao,
@@ -34,6 +36,7 @@ part 'mixin_database.g.dart';
     UserDao,
     FiatDao,
     AssetsExtraDao,
+    CollectibleDao,
   ],
   queries: {},
 )

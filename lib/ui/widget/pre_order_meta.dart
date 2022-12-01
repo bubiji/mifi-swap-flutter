@@ -24,8 +24,7 @@ class PreOrderMetaWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // const _textStyleblack12 = TextStyle(color: Colors.black38, fontSize: 15);
-    const textStyleblack = TextStyle(color: Colors.black, fontSize: 20);
+    const textStyleblack = TextStyle(color: Colors.black, fontSize: 15);
     final showReverse = useState<bool>(false);
     return SliverToBoxAdapter(
       child: Container(
@@ -82,7 +81,7 @@ class PreOrderMetaWidget extends HookWidget {
                   //'${preOrderMeta10.minReceived} $outputSymbol'
                   '${(preOrderMeta10.minReceived - preOrderMeta.minReceived).toStringAsFixed(8)} $outputSymbol'
                       .overflow,
-                  style: const TextStyle(color: Colors.orange, fontSize: 20),
+                  style: const TextStyle(color: Colors.orange, fontSize: 15),
                 ),
               ],
             ),

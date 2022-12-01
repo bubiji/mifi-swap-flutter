@@ -17,7 +17,21 @@ analyzer:
     - 'lib/src/http/**'
     # custom
     - 'lib/generated/**'
+    - lib/mixin_wallet/ui/widget/dialog/transaction_submit_bottom_sheet.dart
+    - lib/mixin_wallet/ui/page/swap_detail.dart
+    - lib/mixin_wallet/ui/page/swap.dart
+    - lib/mixin_wallet/ui/widget/qrcode_scanner.dart
+    - lib/mixin_wallet/ui/page/auth.dart
+    - lib/mixin_wallet/ui/page/buy.dart
+    - lib/mixin_wallet/ui/page/collectible_detail.dart
+    - lib/mixin_wallet/ui/page/home/tab_collectibles.dart
+    - 'lib/mixin_wallet/wyre/**'
     - '**.g.dart'
+    - 'lib/ui/models/**'
+    - 'lib/ui/page/search_add.dart'
+    - 'lib/ui/page/home/wallent_header.dart'
+    - 'lib/ui/page/home.dart'
+    - 'lib/ui/widget/add_swap_asset.dart'
 #    - 'editable/**'
 
 linter:

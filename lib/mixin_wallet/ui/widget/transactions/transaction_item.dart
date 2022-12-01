@@ -16,7 +16,7 @@ import '../asset.dart';
 import '../avatar.dart';
 import '../text.dart';
 
-const kTransactionItemHeight = 80.0;
+const kTransactionItemHeight = 90.0;
 
 class TransactionItem extends HookWidget {
   const TransactionItem({
@@ -50,7 +50,7 @@ class TransactionItem extends HookWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-          //height: kTransactionItemHeight,
+          height: kTransactionItemHeight,
           padding: const EdgeInsets.only(top: 16, bottom: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

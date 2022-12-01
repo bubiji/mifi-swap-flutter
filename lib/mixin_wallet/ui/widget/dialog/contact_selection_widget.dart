@@ -6,6 +6,7 @@ import '../../../../db/mixin_database.dart';
 import '../../../../generated/r.dart';
 import '../../../../util/extension/extension.dart';
 import '../../../../util/hook.dart';
+// import '../../../service/env.dart';
 import '../../../util/native_scroll.dart';
 import '../avatar.dart';
 import '../search_header_widget.dart';
@@ -205,7 +206,15 @@ class _UnauthorizedWidget extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // final uri =
+              //     Uri.https('mixin-www.zeromesh.net', 'oauth/authorize', {
+              //   'client_id': Env.clientId,
+              //   'scope': authScope,
+              //   'response_type': 'code',
+              // });
+              // context.toExternal(uri.toString());
+            },
             child: Text(
               context.l10n.reauthorize,
               style: TextStyle(

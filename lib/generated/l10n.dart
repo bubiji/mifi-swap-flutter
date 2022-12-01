@@ -1500,6 +1500,56 @@ class L10n {
     );
   }
 
+  /// `NFTs`
+  String get nfts {
+    return Intl.message(
+      'NFTs',
+      name: 'nfts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No collectibles found`
+  String get noCollectiblesFound {
+    return Intl.message(
+      'No collectibles found',
+      name: 'noCollectiblesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No collection found`
+  String get noCollectionFound {
+    return Intl.message(
+      'No collection found',
+      name: 'noCollectionFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} items`
+  String collectionItemCount(Object count) {
+    return Intl.message(
+      '$count items',
+      name: 'collectionItemCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Failed to read collectibles`
+  String get collectiblesReadFailed {
+    return Intl.message(
+      'Failed to read collectibles',
+      name: 'collectiblesReadFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Request payment`
   String get requestPayment {
     return Intl.message(
@@ -2634,10 +2684,10 @@ class L10n {
     );
   }
 
-  /// `Wallet`
+  /// `Me`
   String get myWallet {
     return Intl.message(
-      'Wallet',
+      'Me',
       name: 'myWallet',
       desc: '',
       args: [],
@@ -2694,10 +2744,10 @@ class L10n {
     );
   }
 
-  /// `Insufficient balance Please deposit`
+  /// `Balance not enough `
   String get insufficientbalancePleasedeposit {
     return Intl.message(
-      'Insufficient balance Please deposit',
+      'Balance not enough ',
       name: 'insufficientbalancePleasedeposit',
       desc: '',
       args: [],

@@ -13,6 +13,7 @@ Future<void> initStorage() async {
   fixSafariIndexDb();
   await Hive.openBox<dynamic>('profile');
   await Hive.openBox<dynamic>('swap');
+  await Hive.openBox<dynamic>('session');
 }
 
 Auth? get auth => profileBox.get('auth') as Auth?;

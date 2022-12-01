@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../db/mixin_database.dart';
+// import '../../../db/web/construct_db.dart';
 import '../../../util/extension/extension.dart';
 import '../../../util/hook.dart';
 import '../../../util/r.dart';
@@ -11,9 +12,13 @@ import '../../util/constants.dart';
 import '../../util/native_scroll.dart';
 import '../router/mixin_routes.dart';
 import '../widget/action_button.dart';
+// import '../widget/avatar.dart';
+// import '../widget/menu.dart';
 import '../widget/mixin_appbar.dart';
+// import '../widget/mixin_bottom_sheet.dart';
 import 'home/header.dart';
 import 'home/tab_coins.dart';
+// import 'home/tab_collectibles.dart';
 
 // sort type for coins.
 const kQueryParameterSort = 'sort';
@@ -23,6 +28,7 @@ const kQueryParameterTab = 'tab';
 
 enum _Tab {
   coins,
+  // collectibles,
 }
 
 class Home extends HookWidget {
@@ -89,6 +95,8 @@ class Home extends HookWidget {
             if (selectedTab == _Tab.coins) ...[
               SliverToBoxAdapter(child: AssetHeader(sortType: sortType)),
               CoinsSliverList(assetList: assetList),
+              // ] else ...[
+              //   const CollectiblesGroupSliverGrid(),
             ],
           ],
         ),
@@ -101,7 +109,35 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const _HomeAppBar({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MixinAppBar(
+  Widget build(BuildContext context) =>
+      // final account = auth?.account;
+      MixinAppBar(
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Center(
+            child: InkResponse(
+              radius: 24,
+              onTap: () {
+                if (isLoginByCredential) {
+                  context.replace('/');
+                  return;
+                }
+                // showMixinBottomSheet<void>(
+                //   context: context,
+                //   builder: (context) => const _AccountBottomSheet(),
+                // );
+              },
+              // child: account == null
+              //     ? const SizedBox()
+              //     : Avatar(
+              //         avatarUrl: account.avatarUrl,
+              //         userId: account.userId,
+              //         name: account.fullName ?? '',
+              //         size: 32,
+              //       ),
+            ),
+          ),
+        ),
         actions: [
           ActionButton(
             name: R.resourcesSettingSvg,
@@ -141,6 +177,62 @@ extension _SortAssets on List<AssetResult> {
     }
   }
 }
+
+// class _AccountBottomSheet extends StatelessWidget {
+//   const _AccountBottomSheet({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final account = auth?.account;
+//     // might be null when use clicked DeAuthorize button.
+//     if (account == null) {
+//       return const SizedBox();
+//     }
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         MixinBottomSheetTitle(
+//             title: Row(
+//           children: [
+//             Avatar(
+//               avatarUrl: account.avatarUrl,
+//               userId: account.userId,
+//               name: account.fullName ?? '',
+//               size: 32,
+//             ),
+//             const SizedBox(width: 16),
+//             Text(
+//               account.fullName ?? '',
+//               style: const TextStyle(
+//                 fontSize: 16,
+//                 fontWeight: FontWeight.w500,
+//                 color: Colors.black,
+//               ),
+//             ),
+//           ],
+//         )),
+//         const SizedBox(height: 8),
+//         MenuItemWidget(
+//           topRounded: true,
+//           bottomRounded: true,
+//           title: Text(
+//             context.l10n.removeAuthorize,
+//             style: TextStyle(
+//               color: context.colorScheme.red,
+//             ),
+//           ),
+//           onTap: () async {
+//             final id = auth!.account.identityNumber;
+//             await profileBox.clear();
+//             await deleteDatabase(id);
+//             context.replace(authUri.path);
+//           },
+//         ),
+//         const SizedBox(height: 100),
+//       ],
+//     );
+//   }
+// }
 
 class _TabSwitchBar extends HookWidget implements PreferredSizeWidget {
   const _TabSwitchBar({
